@@ -1,8 +1,10 @@
 package com.github.redawl.workouttrackerbackend.model.repository;
 
-import com.github.redawl.workouttrackerbackend.model.data.Exercise;
+import com.github.redawl.workouttrackerbackend.model.dto.ExerciseDto;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ExerciseRepository extends CrudRepository<Exercise, String> {
-    Exercise findExerciseByName(String name);
+import java.math.BigDecimal;
+
+public interface ExerciseRepository extends CrudRepository<ExerciseDto, BigDecimal> {
+    ExerciseDto findExerciseByName(String name);
 }

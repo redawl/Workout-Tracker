@@ -2,31 +2,98 @@ package com.github.redawl.workouttrackerbackend.controller;
 
 import com.github.redawl.workouttrackerbackend.model.data.Workout;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Tag(name="Workouts", description = "Manage workouts")
+@Tag(name="Workout", description = "Manage workouts")
 public interface WorkoutController {
 
     @Operation(
-            summary = "Retrieve a workout by date"
+            summary = "Retrieve a workout by date",
+            responses = {
+                    @ApiResponse(
+                            description = "Ok - Workout was found for given date",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = Workout.class
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            description = "Not Found - Workout was not found for given date",
+                            responseCode = "404",
+                            content = @Content
+                    )
+            }
     )
-    Workout getWorkoutByDate(@RequestParam LocalDate date);
+    Workout getWorkoutByDate(LocalDate date, HttpServletResponse response);
 
     @Operation(
-            summary = "Remove a workout by date"
+            summary = "Remove a workout by date",
+            responses = {
+                    @ApiResponse(
+                            description = "No Content - Workout was removed successfully",
+                            responseCode = "204",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            description = "Not Found - Workout was not found for specified date",
+                            responseCode = "404",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            description = "Bad Request - Date was missing or invalid",
+                            responseCode = "400",
+                            content = @Content
+                    )
+            }
     )
-    void removeWorkoutByDate(@RequestParam LocalDate date);
+    void removeWorkoutByDate(LocalDate date, HttpServletResponse response);
 
     @Operation(
-            summary = "Add a new workout"
+            summary = "Add a new workout",
+            responses = {
+                    @ApiResponse(
+                            description = "Created - Workout was created successfully",
+                            responseCode = "201",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            description = "Bad Request - Workout already exists for specified date",
+                            responseCode = "400",
+                            content = @Content
+                    )
+            }
     )
-    void addWorkout(@RequestParam Workout workout);
+    void addWorkout(Workout workout, HttpServletResponse response);
 
     @Operation(
-            summary = "Update a workout by date"
+            summary = "Update a workout by date",
+            responses = {
+                    @ApiResponse(
+                            description = "Ok - Workout was successfully updated",
+                            content = @Content
+                    )
+            }
     )
-    void updateWorkout(@RequestParam LocalDate date, @RequestParam Workout workout);
+    void updateWorkout(Workout workout, HttpServletResponse response);
+
+    @Operation(
+            summary = "Retrieve all workouts",
+            responses = {
+                    @ApiResponse(
+                            description = "Ok - All workouts were retrieved successfully",
+                            content = @Content
+                    )
+            }
+    )
+    List<Workout> getAllWorkouts();
 }

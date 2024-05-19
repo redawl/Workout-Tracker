@@ -20,8 +20,8 @@ public class OpenApiConfig {
     public OpenAPI openAPI(){
         return new OpenAPI()
                 .info(new Info()
-                        .title("Grade Calc API")
-                        .description("Grade Calculator App API")
+                        .title("Workout Tracker API")
+                        .description("Workout Tracker App API")
                         .version("v1")
                         .contact(new Contact().name(name).email(email).url(site))
                 );

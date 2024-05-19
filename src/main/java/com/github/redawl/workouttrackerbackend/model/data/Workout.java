@@ -1,28 +1,27 @@
 package com.github.redawl.workouttrackerbackend.model.data;
 
-import jakarta.persistence.*;
+import com.github.redawl.workouttrackerbackend.model.dto.ExerciseDto;
+import com.github.redawl.workouttrackerbackend.model.dto.WorkoutDto;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
 @Data
 public class Workout {
-    @Id
-    private BigDecimal id;
     private LocalDate date;
+    private List<Exercise> exercises;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "WORKOUT_EXERCISE",
-            joinColumns = {
-                    @JoinColumn(name = "EXERCISE_NAME")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "WORKOUT_ID")
-            }
-    )
-    private Set<Exercise> exercises;
+    public static Workout fromDto(WorkoutDto dto){
+        Workout workout = new Workout();
+        workout.setDate(dto.getDate());
+        workout.setExercises(new ArrayList<>());
+
+        for(ExerciseDto exerciseDto: dto.getExerciseDtos()){
+            workout.getExercises().add(Exercise.fromDto(exerciseDto));
+        }
+
+        return workout;
+    }
 }
