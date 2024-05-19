@@ -37,3 +37,6 @@ build/
 
 ### Docker Compose ###
 /.env
+
+### Custom ###
+/src/main/resources/static

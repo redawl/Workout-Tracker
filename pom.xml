@@ -9,12 +9,13 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.redawl</groupId>
-	<artifactId>workouttrackerbackend</artifactId>
+	<artifactId>workouttracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>workouttrackerbackend</name>
+	<name>workouttracker</name>
 	<description>Workout Tracker Backend</description>
 	<properties>
 		<java.version>17</java.version>
+		<testcontainers.version>1.19.8</testcontainers.version>
 	</properties>
 	<dependencies>
 		<dependency>
