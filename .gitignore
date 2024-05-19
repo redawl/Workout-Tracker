@@ -34,3 +34,6 @@ build/
 
 ### Postgres ###
 /postgres/data
+
+### Docker Compose ###
+/.env
