@@ -1,13 +1,19 @@
 package com.github.redawl.workouttrackerbackend.model.data;
 
 import com.github.redawl.workouttrackerbackend.model.dto.ExerciseDto;
+import com.github.redawl.workouttrackerbackend.model.dto.ExerciseReferenceDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class Exercise {
+    @NotNull
     private String name;
+    @NotNull
     private Integer lbs;
+    @NotNull
     private Integer reps;
+    @NotNull
     private Integer sets;
 
     public static Exercise fromDto(ExerciseDto dto){
@@ -18,5 +24,9 @@ public class Exercise {
         exercise.setSets(dto.getSets());
 
         return exercise;
+    }
+
+    public static Exercise fromReferenceDto(ExerciseReferenceDto dto){
+        return fromDto(dto.getExercise());
     }
 }

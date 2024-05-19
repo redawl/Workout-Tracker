@@ -2,6 +2,7 @@ package com.github.redawl.workouttrackerbackend.controller;
 
 import com.github.redawl.workouttrackerbackend.model.data.Workout;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -91,7 +92,14 @@ public interface WorkoutController {
             responses = {
                     @ApiResponse(
                             description = "Ok - All workouts were retrieved successfully",
-                            content = @Content
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    implementation = Workout.class
+                                            )
+                                    )
+                            )
                     )
             }
     )

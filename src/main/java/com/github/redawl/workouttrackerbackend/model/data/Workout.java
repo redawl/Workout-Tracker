@@ -2,6 +2,7 @@ package com.github.redawl.workouttrackerbackend.model.data;
 
 import com.github.redawl.workouttrackerbackend.model.dto.ExerciseDto;
 import com.github.redawl.workouttrackerbackend.model.dto.WorkoutDto;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,7 +11,9 @@ import java.util.List;
 
 @Data
 public class Workout {
+    @NotNull
     private LocalDate date;
+    @NotNull
     private List<Exercise> exercises;
 
     public static Workout fromDto(WorkoutDto dto){

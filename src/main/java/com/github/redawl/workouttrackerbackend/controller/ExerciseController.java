@@ -28,11 +28,11 @@ public interface ExerciseController {
     void addExercise(Exercise exercise, HttpServletResponse response);
 
     @Operation(
-            summary = "Remove existing exercise",
+            summary = "Retrieve exercise by name",
             responses = {
                     @ApiResponse(
-                            description = "No Content - exercise was removed successfully",
-                            responseCode = "204",
+                            description = "Ok - exercise was retrieved successfully",
+                            responseCode = "200",
                             content = @Content
                     ),
                     @ApiResponse(
@@ -43,7 +43,7 @@ public interface ExerciseController {
             }
 
     )
-    void removeExercise(String name, HttpServletResponse response);
+    Exercise getExerciseByName(String name, HttpServletResponse response);
 
     @Operation(
             summary = "Retrieve all existing exercises",
