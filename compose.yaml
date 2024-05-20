@@ -11,7 +11,7 @@ services:
       - ./postgres/initdb:/docker-entrypoint-initdb.d
     ports:
       - '5432'
-  api:
-    image: 'workouttrackerbackend:0.0.1-SNAPSHOT'
-    ports:
-      - '8080'
+#  api:
+#    image: 'workouttracker:0.0.1-SNAPSHOT'
+#    ports:
+#      - '8080'

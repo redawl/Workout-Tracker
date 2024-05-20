@@ -19,7 +19,8 @@ import {
     ToggleGroup,
     ToggleGroupItem,
     PageSidebarProps,
-    ToolbarGroup
+    ToolbarGroup,
+    Brand
 } from '@patternfly/react-core';
 import { GithubIcon, BarsIcon, SunIcon, MoonIcon } from '@patternfly/react-icons';
 import { Workouts } from './Workouts';
@@ -105,7 +106,7 @@ export const Navigation: React.FunctionComponent = () => {
 
     const header = (
         <Masthead>
-            <MastheadToggle>
+            <MastheadToggle width='100px'>
                 <PageToggleButton
                     variant="plain"
                     aria-label="Global navigation"
@@ -118,7 +119,7 @@ export const Navigation: React.FunctionComponent = () => {
             </MastheadToggle>
             <MastheadMain>
                 <MastheadBrand href="/" target="_blank">
-                    Logo
+                    <Brand alt='icon' src='/icon.png' widths={{ default: '100px'}}/>
                 </MastheadBrand>
             </MastheadMain>
             <MastheadContent>{headerToolbar}</MastheadContent>

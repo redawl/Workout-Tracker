@@ -14,7 +14,7 @@ import {
     Table,
     Tbody,
     Td
-} from '@patternfly/react-table'
+} from '@patternfly/react-table';
 
 import React, { useEffect } from 'react';
 
@@ -30,7 +30,7 @@ export const Exercises = () => {
         .then((resp) => {
             setExercises(resp);
         })
-        .catch((error: ApiError) => console.error(error))
+        .catch((error: ApiError) => console.error(error));
     })
 
     return (
