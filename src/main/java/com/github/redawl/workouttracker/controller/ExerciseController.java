@@ -60,19 +60,4 @@ public interface ExerciseController {
 
     )
     List<Exercise> getExercises();
-
-    @Operation(
-            summary = "Search for matching exercises by name",
-            responses = {
-                    @ApiResponse(
-                            description = "Ok - exercises matching give name were successfully retrieved",
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = Exercise.class))
-                            )
-                    )
-            }
-    )
-    List<Exercise> searchExercisesByName(String name);
 }

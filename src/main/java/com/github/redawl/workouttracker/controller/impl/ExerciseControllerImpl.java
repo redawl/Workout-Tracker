@@ -32,12 +32,6 @@ public class ExerciseControllerImpl implements ExerciseController {
     }
 
     @Override
-    @GetMapping("/search")
-    public List<Exercise> searchExercisesByName(@RequestParam String name) {
-        return exerciseReferenceService.searchByName(name);
-    }
-
-    @Override
     @PostMapping
     public void addExercise(@RequestBody Exercise exercise, HttpServletResponse response) {
         try {
