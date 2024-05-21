@@ -15,7 +15,7 @@ import {
     NumberInput,
     Alert
 } from '@patternfly/react-core';
-import { REP_STEP, SET_STEP, WEIGHT_STEP, WORKOUTS } from './constants';
+import { REP_STEP, SET_STEP, WEIGHT_STEP, WORKOUTS } from '../components/constants';
 import React from 'react';
 import { formatDate } from '../helpers/DateHelpers';
 import {     

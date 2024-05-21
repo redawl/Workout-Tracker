@@ -25,10 +25,11 @@ import {
     TextVariants
 } from '@patternfly/react-core';
 import { GithubIcon, BarsIcon, SunIcon, MoonIcon } from '@patternfly/react-icons';
-import { Workouts } from './Workouts';
-import { Exercises } from './Exercises';
-import { Reports } from './Reports';
-import { WORKOUTS, EXERCISES, REPORTS, DARK, LIGHT } from './constants';
+import { Workouts } from '../pages/Workouts';
+import { Exercises } from '../pages/Exercises';
+import { Reports } from '../pages/Reports';
+import { WORKOUTS, EXERCISES, REPORTS, DARK, LIGHT, DOCUMENTATION } from './constants';
+import { Documentation } from '../pages/Documentation';
 
 export const Navigation: React.FunctionComponent = () => {
     const [ isSidebarOpen, setIsSidebarOpen ] = React.useState(true);
@@ -141,21 +142,28 @@ export const Navigation: React.FunctionComponent = () => {
                         itemId={WORKOUTS}
                         isActive={currentPage === WORKOUTS}
                     >
-                        Workouts
+                        {WORKOUTS}
                     </NavItem>
                     <NavItem
                         preventDefault
                         itemId={EXERCISES}
                         isActive={currentPage === EXERCISES}
                     >
-                        Exercises
+                        {EXERCISES}
                     </NavItem>
                     <NavItem
                         preventDefault
                         itemId={REPORTS}
                         isActive={currentPage === REPORTS}
                     >
-                        Reports
+                        {REPORTS}
+                    </NavItem>
+                    <NavItem
+                        preventDefault
+                        itemId={DOCUMENTATION}
+                        isActive={currentPage === DOCUMENTATION}
+                    >
+                        {DOCUMENTATION}
                     </NavItem>
                 </Nav>
             </PageSidebarBody>
@@ -170,8 +178,10 @@ export const Navigation: React.FunctionComponent = () => {
                         <Workouts />
                     ) : currentPage === EXERCISES ? (
                         <Exercises />
-                    ) : (
+                    ) : currentPage === REPORTS ? (
                         <Reports />
+                    ) : (
+                        <Documentation />
                     )
                 }
             </PageSection>

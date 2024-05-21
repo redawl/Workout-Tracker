@@ -9,9 +9,9 @@ import {
     PanelMainBody
 } from '@patternfly/react-core';
 
-import { REPORTS } from "./constants";
+import { REPORTS } from "../components/constants";
 import { Workout, WorkoutService } from "../workout-api-client";
-import { LineChart } from "./charts/LineChart";
+import { LineChart } from "../components/charts/LineChart";
 
 export const Reports = () => {
     const [ workouts, setWorkouts ] = React.useState([] as Array<Workout>);

@@ -1,6 +1,7 @@
 export const WORKOUTS: string = 'Workouts';
 export const EXERCISES: string = 'Exercises';
 export const REPORTS: string = 'Reports';
+export const DOCUMENTATION: string = 'Documentation';
 export const REP_STEP: number = 1;
 export const SET_STEP: number = 1;
 export const WEIGHT_STEP: number = 5;

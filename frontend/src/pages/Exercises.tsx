@@ -18,7 +18,7 @@ import {
 
 import React, { useEffect } from 'react';
 
-import { EXERCISES } from './constants';
+import { EXERCISES } from '../components/constants';
 
 import { ApiError, Exercise, ExerciseService } from '../workout-api-client';
 
