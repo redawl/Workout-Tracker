@@ -52,4 +52,11 @@ public class ExerciseReferenceService {
                 .forEach(exerciseReferenceDto -> exercises.add(Exercise.fromReferenceDto(exerciseReferenceDto)));
         return exercises;
     }
+
+    public List<Exercise> searchByName(String name){
+
+        return exerciseReferenceRepository.searchByName(name)
+                .stream().map(Exercise::fromReferenceDto)
+                .toList();
+    }
 }

@@ -20,7 +20,9 @@ import {
     ToggleGroupItem,
     PageSidebarProps,
     ToolbarGroup,
-    Brand
+    Brand,
+    Title,
+    TextVariants
 } from '@patternfly/react-core';
 import { GithubIcon, BarsIcon, SunIcon, MoonIcon } from '@patternfly/react-icons';
 import { Workouts } from './Workouts';
@@ -71,7 +73,11 @@ export const Navigation: React.FunctionComponent = () => {
     const headerToolbar = (
         <Toolbar id="vertical-toolbar">
             <ToolbarContent>
-                <ToolbarItem>Workout Tracker</ToolbarItem>
+                <ToolbarItem>
+                    <Title headingLevel={TextVariants.h1} >
+                        Workout Tracker
+                    </Title>
+                </ToolbarItem>
                 <ToolbarGroup align={{ default: "alignRight" }}>
                     <ToolbarItem>
                         <ToggleGroup>
@@ -94,7 +100,7 @@ export const Navigation: React.FunctionComponent = () => {
                     <ToolbarItem>
                         <Button 
                             variant='link' 
-                            href="https://github.com/redawl/Workout-Tracker-Frontend"
+                            href="https://github.com/redawl/Workout-Tracker"
                             icon={<GithubIcon />}
                             component='a'
                         />

@@ -31,7 +31,7 @@ export const Exercises = () => {
             setExercises(resp);
         })
         .catch((error: ApiError) => console.error(error));
-    })
+    }, []);
 
     return (
         <Panel>

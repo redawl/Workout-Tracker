@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
+import java.util.Locale;
 
 @Tag(name="Exercise", description = "Manage exercises")
 public interface ExerciseController {
@@ -59,4 +60,19 @@ public interface ExerciseController {
 
     )
     List<Exercise> getExercises();
+
+    @Operation(
+            summary = "Search for matching exercises by name",
+            responses = {
+                    @ApiResponse(
+                            description = "Ok - exercises matching give name were successfully retrieved",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Exercise.class))
+                            )
+                    )
+            }
+    )
+    List<Exercise> searchExercisesByName(String name);
 }

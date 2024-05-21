@@ -14,7 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/exercise")
 @CrossOrigin(origins = {
-        "http://localhost:8080"
+        "http://localhost:8080",
+        "http://localhost:5173"
 })
 public class ExerciseControllerImpl implements ExerciseController {
     private final ExerciseReferenceService exerciseReferenceService;
@@ -28,6 +29,12 @@ public class ExerciseControllerImpl implements ExerciseController {
     @ResponseStatus(HttpStatus.OK)
     public List<Exercise> getExercises() {
         return exerciseReferenceService.getExercises();
+    }
+
+    @Override
+    @GetMapping("/search")
+    public List<Exercise> searchExercisesByName(@RequestParam String name) {
+        return exerciseReferenceService.searchByName(name);
     }
 
     @Override

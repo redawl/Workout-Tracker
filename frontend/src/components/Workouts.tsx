@@ -36,6 +36,7 @@ export const Workouts = () => {
     const [exercises, setExercises] = React.useState([] as Array<Exercise>);
     const [saveSuccess, setSaveSuccess] = React.useState(false);
     const [saveFailureMessage, setSaveFailureMessage] = React.useState('');
+    const [unsavedChanges, setUnsavedChanges] = React.useState(false);
 
     const workoutExists = React.useRef(false);
 
@@ -44,6 +45,7 @@ export const Workouts = () => {
             .then((workout: Workout) => {
                     workoutExists.current = true;
                 setExercises(workout.exercises as Array<Exercise>);
+                setUnsavedChanges(false);
             })
             .catch((apiError: ApiError) => {
                 if(apiError.status === 404){
@@ -73,9 +75,9 @@ export const Workouts = () => {
     const updateName = (exerciseIndex: number, exerciseName: string) => {
         setExercises(exercises.map((exercise, index) => {
             if(index === exerciseIndex) {
+                setUnsavedChanges(true);
                 return { ...exercise, name: exerciseName };
             }
-
             return exercise;
         }))
     }
@@ -83,6 +85,7 @@ export const Workouts = () => {
     const updateLbs = (exerciseIndex: number, lbs: number) => {
         setExercises(exercises.map((exercise, index) => {
             if(index === exerciseIndex) {
+                setUnsavedChanges(true);
                 return { ...exercise, lbs };
             }
 
@@ -93,6 +96,7 @@ export const Workouts = () => {
     const updateSets = (exerciseIndex: number, sets: number) => {
         setExercises(exercises.map((exercise, index) => {
             if(index === exerciseIndex) {
+                setUnsavedChanges(true);
                 return { ...exercise, sets };
             }
 
@@ -103,6 +107,7 @@ export const Workouts = () => {
     const updateReps = (exerciseIndex: number, reps: number) => {
         setExercises(exercises.map((exercise, index) => {
             if(index === exerciseIndex) {
+                setUnsavedChanges(true);
                 return { ...exercise, reps };
             }
 
@@ -130,12 +135,15 @@ export const Workouts = () => {
                     exercises
                 }
             })
-            .then(() => setSaveSuccess(true))
+            .then(() => {
+                setSaveSuccess(true);
+                setUnsavedChanges(false);
+                workoutExists.current = true;
+            })
             .catch((error: ApiError) => {setSaveFailureMessage(
                 error.statusText === undefined ? 
                 error.toString() : error.statusText
             )});
-            workoutExists.current = true;
         }
     }
 
@@ -149,6 +157,11 @@ export const Workouts = () => {
                 <PanelMainBody>
                     <Form>
                         <FormGroup label="Workout Date">
+                            {
+                                unsavedChanges && (
+                                    <Alert title="There are unsaved changes. Click 'Save Workout' to save." variant='warning'/>
+                                )
+                            }
                             <DatePicker
                                 onChange={(_event, str) => setWorkoutDate(str)}
                                 value={workoutDate}

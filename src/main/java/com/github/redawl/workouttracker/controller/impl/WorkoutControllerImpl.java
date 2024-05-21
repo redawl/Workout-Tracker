@@ -14,7 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/workout")
 @CrossOrigin(origins = {
-        "http://localhost:8080"
+        "http://localhost:8080",
+        "http://localhost:5173"
 })
 public class WorkoutControllerImpl implements WorkoutController {
     private final WorkoutService workoutService;
