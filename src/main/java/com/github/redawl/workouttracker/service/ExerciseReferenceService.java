@@ -1,50 +1,42 @@
 package com.github.redawl.workouttracker.service;
 
-import com.github.redawl.workouttracker.exception.ExistsException;
 import com.github.redawl.workouttracker.exception.NotFoundException;
 import com.github.redawl.workouttracker.model.data.Exercise;
-import com.github.redawl.workouttracker.model.dto.ExerciseDto;
-import com.github.redawl.workouttracker.model.dto.ExerciseReferenceDto;
 import com.github.redawl.workouttracker.model.repository.ExerciseReferenceRepository;
-import com.github.redawl.workouttracker.model.repository.ExerciseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Retrieve information about the currently available exercises.
+ *
+ * @author Eli Burch
+ */
 @Service
 public class ExerciseReferenceService {
     private final ExerciseReferenceRepository exerciseReferenceRepository;
 
-    private final ExerciseRepository exerciseRepository;
-
-    ExerciseReferenceService(ExerciseReferenceRepository exerciseReferenceRepository, ExerciseRepository exerciseRepository){
+    ExerciseReferenceService(ExerciseReferenceRepository exerciseReferenceRepository){
         this.exerciseReferenceRepository = exerciseReferenceRepository;
-        this.exerciseRepository = exerciseRepository;
     }
 
-    public void addExercise(Exercise exercise) throws ExistsException {
-        ExerciseReferenceDto exerciseReferenceDto = ExerciseReferenceDto.fromExercise(exercise);
-
-        ExerciseDto existingExercise = exerciseRepository.findExerciseByName(exercise.getName());
-
-        if(existingExercise != null){
-            exerciseReferenceDto.getExercise().setId(existingExercise.getId());
-        }
-
-        exerciseReferenceRepository.save(exerciseReferenceDto);
-    }
-
+    /**
+     * Retrieve Exercise by name.
+     * @param name Name of exercise to retrieve
+     * @return Exercise if it exists
+     * @throws NotFoundException If Exercise with that name does not exist
+     */
     public Exercise getExerciseByName(String name) throws NotFoundException {
-        ExerciseReferenceDto exerciseReferenceDto = exerciseReferenceRepository.findByName(name);
-
-        if(exerciseReferenceDto != null){
-            return Exercise.fromReferenceDto(exerciseReferenceDto);
-        } else {
-            throw new NotFoundException("exercise");
-        }
+        return Exercise.fromReferenceDto(exerciseReferenceRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException("exercise"))
+        );
     }
 
+    /**
+     * Retrieve list of all managed exercises.
+     * @return List of exercises
+     */
     public List<Exercise> getExercises() {
         List<Exercise> exercises = new ArrayList<>();
         exerciseReferenceRepository

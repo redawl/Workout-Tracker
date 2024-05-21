@@ -10,23 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
-import java.util.Locale;
 
 @Tag(name="Exercise", description = "Manage exercises")
 public interface ExerciseController {
-    @Operation(
-            summary = "Add new exercise",
-            responses = {
-                    @ApiResponse(
-                            description = "Ok - exercise was added successfully",
-                            responseCode = "201",
-                            content = @Content
-                    ),
-            }
-
-    )
-    void addExercise(Exercise exercise, HttpServletResponse response);
-
     @Operation(
             summary = "Retrieve exercise by name",
             responses = {

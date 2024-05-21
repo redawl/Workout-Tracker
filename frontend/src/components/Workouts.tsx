@@ -66,6 +66,7 @@ export const Workouts = () => {
                 reps: 0
             }
         ])
+        setUnsavedChanges(true);
     }
 
     const removeExercise = (exerciseIndex: number) => {
@@ -123,7 +124,10 @@ export const Workouts = () => {
                     exercises
                 }
             })
-            .then(() => setSaveSuccess(true))
+            .then(() => {
+                setSaveSuccess(true);
+                setUnsavedChanges(false);
+            })
             .catch((error: ApiError) => {setSaveFailureMessage(
                 error.statusText === undefined ? 
                 error.toString() : error.statusText
@@ -156,12 +160,25 @@ export const Workouts = () => {
             <PanelMain>
                 <PanelMainBody>
                     <Form>
-                        <FormGroup label="Workout Date">
-                            {
-                                unsavedChanges && (
+                        {
+                            unsavedChanges && (
+                                <FormGroup>
                                     <Alert title="There are unsaved changes. Click 'Save Workout' to save." variant='warning'/>
-                                )
-                            }
+                                </FormGroup>
+                            )
+                        }
+                        {
+                            saveSuccess && 
+                            <FormGroup>
+                                <Alert
+                                    title="Workout Saved"
+                                    variant="success"
+                                    timeout={10000}
+                                    onTimeout={() => setSaveSuccess(false)}
+                                />
+                            </FormGroup>
+                        }
+                        <FormGroup label="Workout Date">
                             <DatePicker
                                 onChange={(_event, str) => setWorkoutDate(str)}
                                 value={workoutDate}
@@ -235,15 +252,6 @@ export const Workouts = () => {
                                 </Tbody>
                             </Table>
                         </FormGroup>
-                        {
-                            saveSuccess && 
-                            <Alert
-                                title="Workout Saved"
-                                variant="success"
-                                timeout={10000}
-                                onTimeout={() => setSaveSuccess(false)}
-                            />
-                        }
                         {
                             saveFailureMessage.length !== 0 && 
                             <Alert
