@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS WORKOUT (
-    workout_date date primary key
+    workout_date date primary key,
+    user_jwt varchar
 );
 
 CREATE TABLE IF NOT EXISTS EXERCISE (

@@ -1,6 +1,9 @@
+version: "3"
 services:
   postgres:
     image: 'postgres:16.3'
+    networks:
+      - app_network
     environment:
       - 'POSTGRES_DB=${POSTGRES_DB}'
       - 'POSTGRES_PASSWORD=${POSTGRES_PASS}'
@@ -11,7 +14,35 @@ services:
       - ./postgres/initdb:/docker-entrypoint-initdb.d
     ports:
       - '5432'
-#  api:
-#    image: 'workouttracker:0.0.1-SNAPSHOT'
-#    ports:
-#      - '8080'
+  supertokens-core:
+    image: 'registry.supertokens.io/supertokens/supertokens-postgresql:9.0.2'
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+    environment:
+#      - 'POSTGRESQL_USER=${POSTGRES_USER}'
+#      - 'POSTGRESQL_PASSWORD="${POSTGRES_PASS}"'
+#      - 'POSTGRESQL_HOST=postgres'
+#      - 'POSTGRESQL_PORT=5432'
+#      - 'POSTGRESQL_DATABASE_NAME=supertokens'
+      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSURI}@postgres:5432/supertokens"
+    ports:
+      - '3567:3567'
+  auth-server:
+    image: 'node:18'
+    depends_on:
+      - supertokens-core
+    networks:
+      - app_network
+    user: 'node'
+    volumes:
+      - ./auth-server:/home/node/app
+    working_dir: '/home/node/app'
+    command: 'npm start'
+    ports:
+      - "8000:8000"
+
+networks:
+  app_network:
+    driver: bridge

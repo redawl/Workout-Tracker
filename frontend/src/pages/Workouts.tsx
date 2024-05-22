@@ -31,7 +31,8 @@ import { WorkoutService } from '../workout-api-client/services.gen';
 import { Workout, Exercise } from '../workout-api-client/types.gen';
 import { ApiError } from '../workout-api-client';
 
-export const Workouts = () => {
+export const Workouts = ({ accessToken }: {accessToken: string}) => {
+    console.log(accessToken);
     const [workoutDate, setWorkoutDate] = React.useState(formatDate(new Date()));
     const [exercises, setExercises] = React.useState([] as Array<Exercise>);
     const [saveSuccess, setSaveSuccess] = React.useState(false);
