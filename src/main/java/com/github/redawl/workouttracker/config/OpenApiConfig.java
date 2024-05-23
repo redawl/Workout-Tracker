@@ -3,6 +3,7 @@ package com.github.redawl.workouttracker.config;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,11 @@ public class OpenApiConfig {
                         .description("Workout Tracker App API")
                         .version("v1")
                         .contact(new Contact().name(name).email(email).url(site))
+                )
+                .addServersItem(
+                        new Server()
+                            .url("http://127.0.0.1")
+                            .description("Server url")
                 );
     }
 }

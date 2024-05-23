@@ -1,0 +1,12 @@
+server {
+    listen 80 default_server;
+    server_name workout-tracker;
+
+    location /api/auth {
+        proxy_pass http://127.0.0.1:8000/api/auth;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}

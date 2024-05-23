@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen-client": "npx @hey-api/openapi-ts -o src/workout-api-client -c fetch -i http://127.0.0.1/v3/api-docs"
   },
   "dependencies": {
     "@patternfly/react-charts": "^7.3.0",
@@ -21,6 +22,7 @@
     "supertokens-auth-react": "^0.41.1"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.45.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

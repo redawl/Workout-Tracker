@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetWorkoutByDateData, GetWorkoutByDateResponse, UpdateWorkoutData, UpdateWorkoutResponse, AddWorkoutData, AddWorkoutResponse, RemoveWorkoutByDateData, RemoveWorkoutByDateResponse, GetAllWorkoutsResponse, GetExerciseByNameData, GetExerciseByNameResponse, AddExerciseData, AddExerciseResponse, GetExercisesResponse } from './types.gen';
+import type { GetWorkoutByDateData, GetWorkoutByDateResponse, UpdateWorkoutData, UpdateWorkoutResponse, AddWorkoutData, AddWorkoutResponse, RemoveWorkoutByDateData, RemoveWorkoutByDateResponse, GetAllWorkoutsResponse, GetExerciseByNameData, GetExerciseByNameResponse, GetExercisesResponse } from './types.gen';
 
 export class WorkoutService {
     /**
@@ -114,22 +114,6 @@ export class ExerciseService {
             errors: {
                 404: 'Not Found - Exercise with that name does not exist'
             }
-        });
-    }
-    
-    /**
-     * Add new exercise
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns unknown Ok - exercise was added successfully
-     * @throws ApiError
-     */
-    public static addExercise(data: AddExerciseData): CancelablePromise<AddExerciseResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/exercise',
-            body: data.requestBody,
-            mediaType: 'application/json'
         });
     }
     

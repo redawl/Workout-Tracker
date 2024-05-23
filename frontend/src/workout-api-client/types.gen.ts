@@ -44,12 +44,6 @@ export type GetExerciseByNameData = {
 
 export type GetExerciseByNameResponse = unknown;
 
-export type AddExerciseData = {
-    requestBody: Exercise;
-};
-
-export type AddExerciseResponse = unknown;
-
 export type GetExercisesResponse = Array<Exercise>;
 
 export type $OpenApiTs = {
@@ -129,15 +123,6 @@ export type $OpenApiTs = {
                  * Not Found - Exercise with that name does not exist
                  */
                 404: unknown;
-            };
-        };
-        post: {
-            req: AddExerciseData;
-            res: {
-                /**
-                 * Ok - exercise was added successfully
-                 */
-                201: unknown;
             };
         };
     };

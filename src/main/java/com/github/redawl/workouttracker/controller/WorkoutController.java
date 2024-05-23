@@ -2,10 +2,13 @@ package com.github.redawl.workouttracker.controller;
 
 import com.github.redawl.workouttracker.model.data.Workout;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -13,6 +16,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name="Workout", description = "Manage workouts")
+@SecurityScheme(
+        type = SecuritySchemeType.APIKEY,
+        description = "Jwt Cookie Authentication",
+        name = "sAccessToken",
+        in = SecuritySchemeIn.COOKIE
+)
 public interface WorkoutController {
 
     @Operation(

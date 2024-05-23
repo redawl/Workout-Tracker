@@ -11,4 +11,9 @@ public class HomeController {
     public String index(){
         return "index.html";
     }
+
+    @GetMapping("/auth")
+    public String auth(){
+        return "index.html";
+    }
 }

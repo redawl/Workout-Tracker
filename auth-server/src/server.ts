@@ -11,28 +11,28 @@ supertokens.init({
     framework: "express",
     supertokens: {
         // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
-        connectionURI: "http://supertokens:3567",
+        connectionURI: "http://supertokens-core:3567",
         // apiKey: <API_KEY(if configured)>,
     },
     appInfo: {
         // learn more about this on https://supertokens.com/docs/emailpassword/appinfo
         appName: "WorkoutTracker",
-        apiDomain: "localhost:8080",
-        websiteDomain: "localhost:5173",
+        apiDomain: "localhost",
+        websiteDomain: "localhost",
         apiBasePath: "/api/auth",
         websiteBasePath: "/auth"
     },
     recipeList: [
         EmailPassword.init(),
-        Session.init(),
-        Dashboard.init() // initializes session features
+        Session.init(), // initializes session features
+        Dashboard.init() 
     ]
 });
 
 let app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost",
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
 }));
