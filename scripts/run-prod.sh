@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+. "/home/github/.profile"
 
 DIR=$(dirname "${0}")
 

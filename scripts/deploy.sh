@@ -23,5 +23,6 @@ then
   ln -s "/home/github/Workout-Tracker/etc/systemd/workouttracker.service" "/home/github/.config/systemd/user/workouttracker.service"
 fi
 
+systemctl --user daemon-reload
 systemctl --user restart workouttracker
 
