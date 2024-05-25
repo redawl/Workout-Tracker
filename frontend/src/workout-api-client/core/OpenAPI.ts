@@ -40,7 +40,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-	BASE: 'http://127.0.0.1',
+	BASE: `${import.meta.env.VITE_HTTP_PROTOCOL}://${import.meta.env.VITE_DOMAIN}`,
 	CREDENTIALS: 'include',
 	ENCODE_PATH: undefined,
 	HEADERS: undefined,

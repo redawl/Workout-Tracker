@@ -20,7 +20,7 @@ export const LineChart = ({ workouts }: { workouts: Array<Workout> }) => {
                     data={workouts}
                     name="lbs"
                     x={(datum: Workout) => datum.date}
-                    y={(datum: Workout) => datum.exercises.reduce((prev: number, next: Exercise) => prev + next.lbs, 0)}
+                    y={(datum: Workout) => datum.exercises.reduce((prev: number, next: Exercise) => prev + next.lbs * next.reps * next.sets, 0)}
                 />
             </ChartGroup>
         </Chart>

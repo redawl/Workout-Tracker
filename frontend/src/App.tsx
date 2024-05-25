@@ -8,12 +8,13 @@ import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpass
 import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
+// SuperTokens config
 SuperTokens.init({
     appInfo: {
         // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
         appName: "Workout Tracker",
-        apiDomain: "127.0.0.1",
-        websiteDomain: "127.0.0.1",
+        apiDomain: import.meta.env.VITE_DOMAIN,
+        websiteDomain: import.meta.env.VITE_DOMAIN,
         apiBasePath: "/api/auth",
         websiteBasePath: "/auth",
     },

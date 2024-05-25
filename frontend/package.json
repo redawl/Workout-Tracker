@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --mode=dev",
+    "build": "tsc && vite build --mode=dev",
+    "build:prod": "tsc && vite build --mode=prod",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "gen-client": "npx @hey-api/openapi-ts -o src/workout-api-client -c fetch -i http://127.0.0.1/v3/api-docs"
   },
   "dependencies": {
+    "@hey-api/client-fetch": "^0.1.2",
     "@patternfly/react-charts": "^7.3.0",
     "@patternfly/react-core": "^5.3.3",
     "@patternfly/react-icons": "^5.3.2",

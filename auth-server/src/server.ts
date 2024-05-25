@@ -10,7 +10,6 @@ import { middleware } from "supertokens-node/framework/express";
 supertokens.init({
     framework: "express",
     supertokens: {
-        // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
         connectionURI: "http://supertokens-core:3567",
         // apiKey: <API_KEY(if configured)>,
     },

@@ -13,7 +13,7 @@ $ git clone https://github.com/redawl/Workout-Tracker.git
 
 Build and start the application:
 ```bash
-$ ./scripts/run.sh
+$ ./scripts/run-dev.sh
 ```
 
 That's it!

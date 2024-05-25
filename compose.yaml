@@ -20,7 +20,7 @@ services:
     networks:
       - app_network
     environment:
-      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSURI}@postgres:5432/supertokens"
+      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@postgres:5432/supertokens"
   auth-server:
     image: 'node:18'
     depends_on:
@@ -34,6 +34,21 @@ services:
     command: 'npm start'
     ports:
       - "8000:8000"
+#  workout-tracker:
+#    image: workouttracker:0.0.1-SNAPSHOT
+#    depends_on:
+#      - auth-server
+#      - postgres
+#    networks:
+#      - app_network
+#    environment:
+#      - 'POSTGRES_DB=${POSTGRES_DB}'
+#      - 'POSTGRES_PASSWORD=${POSTGRES_PASS}'
+#      - 'POSTGRES_USER=${POSTGRES_USER}'
+#    expose:
+#      - "8080"
+#    ports:
+#      - "8080:8080"
 
 networks:
   app_network:

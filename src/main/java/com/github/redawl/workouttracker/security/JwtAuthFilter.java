@@ -1,6 +1,8 @@
 package com.github.redawl.workouttracker.security;
 
 import com.github.redawl.workouttracker.service.JwtService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -14,9 +16,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
+/**
+ * Security filter to authenticate Jwt cookie
+ * @author Eli Burch
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+    public static final String S_ACCESS_TOKEN = "sAccessToken";
+
     private final JwtService jwtService;
 
     public JwtAuthFilter(JwtService jwtService){
@@ -26,16 +35,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         if(request.getCookies() != null) {
-            Arrays.stream(request.getCookies())
-                    .filter(cookie -> cookie.getName().equals("sAccessToken"))
+            Optional<Jws<Claims>> jws = Arrays.stream(request.getCookies())
+                    .filter(cookie -> cookie.getName().equals(S_ACCESS_TOKEN))
                     .map(Cookie::getValue)
-                    .findAny().flatMap(jwtService::authenticate).ifPresent(jws -> {
-                        String userid = jws.getPayload().getSubject();
-                        UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(jws, userid, null);
-                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    });
+                    .findAny().flatMap(jwtService::authenticate);
+
+            if(jws.isPresent()){
+                String userid = jws.get().getPayload().getSubject();
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(jws.get(), userid, null);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 }
