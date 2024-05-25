@@ -11,6 +11,12 @@ else
   git pull
 fi
 
+
+if [ ! -f "/home/github/.env" ];
+then
+  mv "/home/github/.env" "/home/github/Workout-Tracker"
+fi
+
 if [ ! -f "/home/github/.config/systemd/user/workouttracker.service" ];
 then
   mkdir -p "/home/github/.config/systemd/user" || echo "Systemd user dir already exists"

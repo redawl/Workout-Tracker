@@ -33,7 +33,7 @@ services:
     working_dir: '/home/node/app'
     command: 'npm start'
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
 #  workout-tracker:
 #    image: workouttracker:0.0.1-SNAPSHOT
 #    depends_on:
