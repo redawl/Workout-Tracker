@@ -17,5 +17,5 @@ jobs:
       - run: |
           touch /tmp/ssh_key
           chmod 600 /tmp/ssh_key
-          echo ${{ SSH_DEPLOY_KEY }} > /tmp/ssh_key
+          echo ${SSH_DEPLOY_KEY} > /tmp/ssh_key
           ssh github@workout.burchbytes.com bash < ./scripts/deploy.sh
