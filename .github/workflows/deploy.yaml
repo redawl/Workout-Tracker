@@ -15,6 +15,6 @@ jobs:
           touch /tmp/ssh_key
           chmod 600 /tmp/ssh_key
           echo ${SSH_DEPLOY_KEY} > /tmp/ssh_key
-          ssh -o StrictHostKeyChecking=no github@workout.burchbytes.com bash < ./scripts/deploy.sh
+          ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key github@workout.burchbytes.com bash < ./scripts/deploy.sh
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
