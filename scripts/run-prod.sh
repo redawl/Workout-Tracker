@@ -1,9 +1,11 @@
 #!/bin/bash
 
+set -e
+
 DIR=$(dirname "${0}")
 
-pushd "${DIR}/../frontend" || exit
+pushd "${DIR}/../frontend"
 npm run "build:prod"
-popd || exit
-pushd "${DIR}/../" || exit
+popd
+pushd "${DIR}/../"
 spring_profiles_active=prod ./mvnw spring-boot:run
