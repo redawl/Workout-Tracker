@@ -6,20 +6,38 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - run: mvn test
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v4
       - run: |
-          touch /tmp/ssh_key
-          chmod 600 /tmp/ssh_key
+          echo "Creating SSH Key file"
           echo -n "${SSH_DEPLOY_KEY}" > /tmp/ssh_key
+          chmod 600 /tmp/ssh_key
+          
+          echo "Verifying SSH Key file"
           ssh-keygen -l -f /tmp/ssh_key
+          
+          echo "Creating ENV file"
           echo "POSTGRES_USER: ${POSTGRES_USER}" >> .env
           echo "POSTGRES_PASS: ${POSTGRES_PASS}" >> .env
           echo "POSTGRES_DB: ${POSTGRES_DB}" >> .env
+          
+          echo "Deploying ENV file"
           scp -o StrictHostKeyChecking=no -i /tmp/ssh_key .env github@workout.burchbytes.com:.env
+          
+          echo "Running Deploy script"
           ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key github@workout.burchbytes.com bash < ./scripts/deploy.sh
 
         env:

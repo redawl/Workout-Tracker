@@ -2,6 +2,7 @@
 Description=Start Workout Tracker
 
 [Service]
+Type=exec
 ExecStart=/home/github/Workout-Tracker/scripts/run-prod.sh
 Restart=always
 RestartSec=60

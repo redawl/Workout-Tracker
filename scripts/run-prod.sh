@@ -1,7 +1,8 @@
 #!/bin/bash
 
 set -e
-. "/home/github/.profile"
+echo "sourcing .profile"
+. "/home/github/.profile" || echo "Failed to source .profile"
 
 DIR=$(dirname "${0}")
 
