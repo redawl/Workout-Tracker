@@ -13,6 +13,7 @@ fi
 
 if [ ! -f "/home/github/.config/systemd/user/workouttracker.service" ];
 then
+  mkdir -p "/home/github/.config/systemd/user" || echo "Systemd user dir already exists"
   ln -s "etc/systemd/workouttracker.service" "/home/github/.config/systemd/user/workouttracker.service"
 fi
 
