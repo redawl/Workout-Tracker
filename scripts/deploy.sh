@@ -12,7 +12,7 @@ else
 fi
 
 
-if [ ! -f "/home/github/.env" ];
+if [ -f "/home/github/.env" ];
 then
   mv "/home/github/.env" "/home/github/Workout-Tracker"
 fi
