@@ -2,7 +2,7 @@
 
 set -e
 
-if [ ! -f "/home/github/workouttracker" ];
+if [ ! -f "/home/github/Workout-Tracker" ];
 then
   git clone "git@github.com:redawl/Workout-Tracker.git"
   pushd "/home/github/Workout-Tracker"
