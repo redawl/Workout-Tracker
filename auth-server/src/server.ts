@@ -17,8 +17,8 @@ supertokens.init({
     appInfo: {
         // learn more about this on https://supertokens.com/docs/emailpassword/appinfo
         appName: "WorkoutTracker",
-        apiDomain: "localhost",
-        websiteDomain: "localhost",
+        apiDomain: process.env.API_DOMAIN!,
+        websiteDomain: process.env.API_DOMAIN!,
         apiBasePath: "/api/auth",
         websiteBasePath: "/auth"
     },

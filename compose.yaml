@@ -27,6 +27,8 @@ services:
       - supertokens-core
     networks:
       - app_network
+    environment:
+      API_DOMAIN: "${API_DOMAIN}"
     user: 'node'
     volumes:
       - ./auth-server:/home/node/app

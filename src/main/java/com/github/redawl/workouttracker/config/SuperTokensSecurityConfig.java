@@ -24,7 +24,8 @@ public class SuperTokensSecurityConfig {
                         .requestMatchers("/api/**")
                         .authenticated()
                         .requestMatchers("/**").permitAll()
-                        )
+                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthFilter, RequestCacheAwareFilter.class);
 
         return http.build();

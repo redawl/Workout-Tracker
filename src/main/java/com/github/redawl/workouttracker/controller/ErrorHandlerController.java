@@ -21,8 +21,7 @@ public class ErrorHandlerController implements ErrorController {
         System.out.println(exception.getMessage());
         exception.printStackTrace();
 
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return null;
     }
 }
