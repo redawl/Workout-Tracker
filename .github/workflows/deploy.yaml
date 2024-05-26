@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+      - name: Cache Maven Repo
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2
       - name: Setup Java Environment
         uses: actions/setup-java@v4
         with:
