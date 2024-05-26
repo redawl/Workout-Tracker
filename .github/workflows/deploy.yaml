@@ -35,7 +35,7 @@ jobs:
           echo "POSTGRES_USER: ${POSTGRES_USER}" >> .env
           echo "POSTGRES_PASS: ${POSTGRES_PASS}" >> .env
           echo "POSTGRES_DB: ${POSTGRES_DB}" >> .env
-          echo "API_DOMAIN: workout.burchbytes.com >> .env
+          echo "API_DOMAIN: workout.burchbytes.com" >> .env
           
           echo "Deploying ENV file"
           scp -o StrictHostKeyChecking=no -i /tmp/ssh_key .env github@workout.burchbytes.com:.env
