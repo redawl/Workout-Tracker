@@ -7,6 +7,8 @@ import Session from "supertokens-auth-react/recipe/session";
 import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
 import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import EmailVerification from "supertokens-auth-react/recipe/emailverification";
+import { EmailVerificationPreBuiltUI } from "supertokens-auth-react/recipe/emailverification/prebuiltui";
 
 // SuperTokens config
 SuperTokens.init({
@@ -19,15 +21,16 @@ SuperTokens.init({
         websiteBasePath: "/auth",
     },
     recipeList: [
+        EmailVerification.init(),
         EmailPassword.init(),
         Session.init(),
     ]
 });
 
 function App() {
-    if (canHandleRoute([EmailPasswordPreBuiltUI])) {
+    if (canHandleRoute([EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])) {
         // This renders the login UI on the /auth route
-        return getRoutingComponent([EmailPasswordPreBuiltUI])
+        return getRoutingComponent([EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])
     }
 
     return (

@@ -16,6 +16,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -44,6 +46,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String userid = jws.get().getPayload().getSubject();
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(jws.get(), userid, null);
+
+                // Check if email is verified
+                if(jws.get().getPayload().getOrDefault("st-ev", new LinkedHashMap<>()) instanceof Map<?,?> stEv
+                        && stEv.get("v") instanceof Boolean emailVerified && Boolean.FALSE.equals(emailVerified)){
+                    authenticationToken.setAuthenticated(false);
+                }
+
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

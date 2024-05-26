@@ -1,6 +1,11 @@
+CREATE TABLE IF NOT EXISTS WT_USER {
+    user_jwt varchar primary key
+};
+
 CREATE TABLE IF NOT EXISTS WORKOUT (
     workout_date date primary key,
-    user_jwt varchar
+    user_jwt varchar,
+    constraint fk_user_jwt foreign key (user_jwt) references WT_USER (user_jwt)
 );
 
 CREATE TABLE IF NOT EXISTS EXERCISE (
@@ -36,4 +41,4 @@ CREATE TRIGGER UPDATE_EXERCISE_REFERENCE_TRGR
     EXECUTE PROCEDURE UPDATE_EXERCISE_REFERENCE()
 ;
 
-CREATE DATABASE supertokens
+CREATE DATABASE supertokens;

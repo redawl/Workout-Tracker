@@ -6,6 +6,7 @@ import express from 'express';
 import cors from 'cors';
 import { errorHandler } from "supertokens-node/framework/express";
 import { middleware } from "supertokens-node/framework/express";
+import EmailVerification from "supertokens-node/recipe/emailverification";
 
 supertokens.init({
     framework: "express",
@@ -22,6 +23,9 @@ supertokens.init({
         websiteBasePath: "/auth"
     },
     recipeList: [
+        EmailVerification.init({
+            mode: "REQUIRED"
+        }),
         EmailPassword.init(),
         Session.init(), // initializes session features
         Dashboard.init() 
