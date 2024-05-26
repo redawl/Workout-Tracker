@@ -59,7 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // If we have no auth, send unauthorized
         if(SecurityContextHolder.getContext().getAuthentication() == null){
-            response.sendRedirect("/auth");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             filterChain.doFilter(request, response);
         }
