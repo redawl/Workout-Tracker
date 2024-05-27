@@ -6,6 +6,7 @@ import com.github.redawl.workouttracker.model.data.Exercise;
 import com.github.redawl.workouttracker.service.ExerciseReferenceService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ExerciseControllerImpl implements ExerciseController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Exercise> getExercises() {
-        return exerciseReferenceService.getExercises();
+        return exerciseReferenceService.getExercises(getUserJwt());
     }
 
     @Override
@@ -38,11 +39,22 @@ public class ExerciseControllerImpl implements ExerciseController {
     public Exercise getExerciseByName(String name, HttpServletResponse response) {
         try{
             response.setStatus(HttpServletResponse.SC_OK);
-            return exerciseReferenceService.getExerciseByName(name);
+            return exerciseReferenceService.getExerciseByName(name, getUserJwt());
         } catch (NotFoundException ex){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
 
         return null;
+    }
+
+    private String getUserJwt(){
+        Object credentials = SecurityContextHolder.getContext().getAuthentication() == null ? null
+                : SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
+        if(credentials instanceof String userJwt){
+            return userJwt;
+        }
+
+        throw new RuntimeException("Unauthorized user got to endpoint that requires authorization!");
     }
 }

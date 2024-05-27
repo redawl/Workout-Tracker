@@ -8,22 +8,21 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class Workout {
     @NotNull
     private LocalDate date;
     @NotNull
-    private List<Exercise> exercises;
+    private Set<Exercise> exercises;
 
     public static Workout fromDto(WorkoutDto dto){
         Workout workout = new Workout();
         workout.setDate(dto.getDate());
-        workout.setExercises(new ArrayList<>());
 
-        for(ExerciseDto exerciseDto: dto.getExerciseDtos()){
-            workout.getExercises().add(Exercise.fromDto(exerciseDto));
-        }
+        workout.setExercises(dto.getExercises().stream().map(Exercise::fromDto).collect(Collectors.toSet()));
 
         return workout;
     }

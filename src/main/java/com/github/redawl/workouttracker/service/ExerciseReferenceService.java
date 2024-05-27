@@ -2,6 +2,7 @@ package com.github.redawl.workouttracker.service;
 
 import com.github.redawl.workouttracker.exception.NotFoundException;
 import com.github.redawl.workouttracker.model.data.Exercise;
+import com.github.redawl.workouttracker.model.dto.UserDto;
 import com.github.redawl.workouttracker.model.repository.ExerciseReferenceRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,24 +25,25 @@ public class ExerciseReferenceService {
     /**
      * Retrieve Exercise by name.
      * @param name Name of exercise to retrieve
+     * @param userJwt token of current user
      * @return Exercise if it exists
      * @throws NotFoundException If Exercise with that name does not exist
      */
-    public Exercise getExerciseByName(String name) throws NotFoundException {
-        return Exercise.fromReferenceDto(exerciseReferenceRepository.findByName(name)
+    public Exercise getExerciseByName(String name, String userJwt) throws NotFoundException {
+        return Exercise.fromReferenceDto(exerciseReferenceRepository.findByNameAndUser(name, UserDto.from(userJwt))
                 .orElseThrow(() -> new NotFoundException("exercise"))
         );
     }
 
     /**
      * Retrieve list of all managed exercises.
+     * @param userJwt token of current user
      * @return List of exercises
      */
-    public List<Exercise> getExercises() {
-        List<Exercise> exercises = new ArrayList<>();
-        exerciseReferenceRepository
-                .findAll()
-                .forEach(exerciseReferenceDto -> exercises.add(Exercise.fromReferenceDto(exerciseReferenceDto)));
-        return exercises;
+    public List<Exercise> getExercises(String userJwt) {
+        return exerciseReferenceRepository
+                .findAllByUser(UserDto.from(userJwt)).stream()
+                .map(Exercise::fromReferenceDto)
+                .toList();
     }
 }

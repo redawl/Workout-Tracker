@@ -1,44 +1,34 @@
-CREATE TABLE IF NOT EXISTS WT_USER {
-    user_jwt varchar primary key
-};
+CREATE TABLE IF NOT EXISTS WT_USER (
+    id varchar(36) primary key
+);
 
 CREATE TABLE IF NOT EXISTS WORKOUT (
-    workout_date date primary key,
-    user_jwt varchar,
-    constraint fk_user_jwt foreign key (user_jwt) references WT_USER (user_jwt)
+    id BIGSERIAL primary key,
+    workout_date date,
+    user_id varchar(36),
+    constraint fk_user_id foreign key (user_id) references WT_USER (id),
+    UNIQUE (workout_date, user_id)
+);
+
+CREATE TABLE IF NOT EXISTS EXERCISE_REFERENCE (
+    id BIGSERIAL primary key,
+    name varchar(200),
+    user_id varchar(36),
+    constraint fk_user_id foreign key (user_id) references WT_USER (id),
+    UNIQUE(name, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS EXERCISE (
     id BIGSERIAL primary key,
-    name varchar(200),
+    workout_id BIGSERIAL,
+    user_id varchar(36),
+    exercise_reference_id BIGSERIAL,
     lbs  int,
     reps int,
     sets int,
-    workout_id date,
-    constraint fk_workout_id foreign key (workout_id) references WORKOUT (workout_date)
+    constraint fk_workout_id foreign key (workout_id) references WORKOUT (id),
+    constraint fk_user_id foreign key (user_id) references WT_USER (id),
+    constraint fk_exercise_id foreign key (exercise_reference_id) references EXERCISE_REFERENCE (id)
 );
-
-CREATE TABLE IF NOT EXISTS EXERCISE_REFERENCE (
-    name varchar(200) primary key,
-    exercise_id BIGSERIAL UNIQUE,
-    constraint fk_exercise_id foreign key (exercise_id) references EXERCISE (id)
-);
-
-CREATE FUNCTION UPDATE_EXERCISE_REFERENCE()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        INSERT INTO EXERCISE_REFERENCE (name, exercise_id)
-        VALUES (NEW.name, NEW.id)
-        ON CONFLICT(name) DO UPDATE SET exercise_id = NEW.id;
-        RETURN NULL;
-    END
-    $$ LANGUAGE plpgsql
-;
-
-CREATE TRIGGER UPDATE_EXERCISE_REFERENCE_TRGR
-    AFTER UPDATE OR INSERT ON EXERCISE
-    FOR EACH ROW
-    EXECUTE PROCEDURE UPDATE_EXERCISE_REFERENCE()
-;
 
 CREATE DATABASE supertokens;
