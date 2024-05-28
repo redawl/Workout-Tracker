@@ -4,6 +4,7 @@ import com.github.redawl.workouttracker.model.data.Exercise;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CascadeType;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(exclude = "exercises")
+@ToString(exclude = "exercises")
 @Table(name = "EXERCISE_REFERENCE")
 public class ExerciseReferenceDto {
     @Id

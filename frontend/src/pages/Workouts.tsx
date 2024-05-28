@@ -11,7 +11,7 @@ import {
     ActionGroup,
     Button,
     ButtonVariant,
-    TextInput,
+//    TextInput,
     NumberInput,
     Alert
 } from '@patternfly/react-core';
@@ -27,19 +27,28 @@ import {
     Td
 } from '@patternfly/react-table'
 
-import { WorkoutService } from '../workout-api-client/services.gen';
+import { ExerciseService, WorkoutService } from '../workout-api-client/services.gen';
 import { Workout, Exercise } from '../workout-api-client/types.gen';
 import { ApiError } from '../workout-api-client';
+import { SearchAutocomplete } from '../components/SearchAutocomplete';
 
-export const Workouts = ({ accessToken }: {accessToken: string}) => {
-    console.log(accessToken);
+export const Workouts = () => {
     const [workoutDate, setWorkoutDate] = React.useState(formatDate(new Date()));
     const [exercises, setExercises] = React.useState([] as Array<Exercise>);
     const [saveSuccess, setSaveSuccess] = React.useState(false);
     const [saveFailureMessage, setSaveFailureMessage] = React.useState('');
     const [unsavedChanges, setUnsavedChanges] = React.useState(false);
+    const [exerciseReferences, setExerciseReferences] = React.useState([] as Array<Exercise>);
 
     const workoutExists = React.useRef(false);
+
+    React.useEffect(() => {
+        ExerciseService.getExercises().then((references) => {
+            setExerciseReferences(references);
+        }).catch((apiError: ApiError) => {
+            console.error(apiError);
+        });
+    }, []);
 
     React.useEffect(() => {
         WorkoutService.getWorkoutByDate({ date: workoutDate })
@@ -152,6 +161,15 @@ export const Workouts = ({ accessToken }: {accessToken: string}) => {
         }
     }
 
+    const updateExercise = (exercise: Exercise, index: number) => {
+        setExercises(exercises.map((currExercise, exerciseIndex) => {
+            if(exerciseIndex === index){
+                return {...exercise};
+            }
+            return currExercise;
+        }));
+    }
+
     return (
         <Panel>
             <PanelHeader>
@@ -201,10 +219,17 @@ export const Workouts = ({ accessToken }: {accessToken: string}) => {
                                         exercises.map((exercise: Exercise, index) => (
                                             <Tr key={index}>
                                                 <Td>
-                                                    <TextInput id={exercise.name} 
+                                                    {/* <TextInput id={exercise.name} 
                                                         value={exercise.name} 
                                                         onChange={(_event, name: string) => updateName(index, name)}
                                                         aria-label={exercise.name.length > 0 ? exercise.name : "Newly added workout"}
+                                                    /> */}
+                                                    <SearchAutocomplete
+                                                        exercises={exerciseReferences}
+                                                        index={index}
+                                                        startingValue={exercise.name}
+                                                        parentOnSelect={(exercise: Exercise, index: number) => updateExercise(exercise, index)}
+                                                        parentOnChange={(exerciseIndex: number, exerciseName: string) => updateName(exerciseIndex, exerciseName)}
                                                     />
                                                 </Td>
                                                 <Td>

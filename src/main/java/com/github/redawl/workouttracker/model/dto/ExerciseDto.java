@@ -58,4 +58,13 @@ public class ExerciseDto {
 
         return dto;
     }
+
+    public void merge(Exercise exercise) {
+        if(!getExerciseReference().getName().equals(exercise.getName()))
+            throw new IllegalArgumentException("Merging exercises must have same name");
+
+        setLbs(exercise.getLbs());
+        setReps(exercise.getReps());
+        setSets(exercise.getSets());
+    }
 }

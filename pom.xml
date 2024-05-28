@@ -74,6 +74,10 @@
 			<version>4.6.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+		</dependency>
 
 		<!-- spring-doc -->
 		<dependency>

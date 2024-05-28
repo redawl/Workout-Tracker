@@ -30,27 +30,17 @@ import { Exercises } from '../pages/Exercises';
 import { Reports } from '../pages/Reports';
 import { WORKOUTS, EXERCISES, REPORTS, DARK, LIGHT, DOCUMENTATION } from './constants';
 import { Documentation } from '../pages/Documentation';
-import Session from "supertokens-auth-react/recipe/session";
 import { signOut } from "supertokens-auth-react/recipe/emailpassword";
 
 export const Navigation = () => {
     const [ isSidebarOpen, setIsSidebarOpen ] = React.useState(true);
     const [ currentPage, setCurrentPage ] = React.useState(WORKOUTS);
     const [ theme, setTheme ] = React.useState('dark' as PageSidebarProps["theme"]);
-    const [accessToken, setAccessToken] = React.useState('');
 
     async function logOut(){
         await signOut();
         window.location.href = '/auth';
     }
-
-    React.useEffect(() => {
-        Session.getAccessToken().then((token) => {
-            if(token !== undefined){
-                setAccessToken(token);
-            }
-        })
-    }, []);
 
     React.useEffect(() => {
         const savedTheme = localStorage.getItem('theme') as PageSidebarProps["theme"];
@@ -196,7 +186,7 @@ export const Navigation = () => {
             <PageSection>
                 {
                     currentPage === WORKOUTS ? (
-                        <Workouts accessToken={ accessToken }/>
+                        <Workouts />
                     ) : currentPage === EXERCISES ? (
                         <Exercises />
                     ) : currentPage === REPORTS ? (

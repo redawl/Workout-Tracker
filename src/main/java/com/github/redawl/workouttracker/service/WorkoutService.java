@@ -105,10 +105,9 @@ public class WorkoutService {
         List<ExerciseReferenceDto> exerciseReferences = exerciseReferenceRepository.findAllByUser(UserDto.from(userJwt));
 
         if(dto.isPresent()){
-            WorkoutDto newDto = WorkoutDto.from(workout, userJwt, exerciseReferences);
-            newDto.setId(dto.get().getId());
+            dto.get().merge(workout, exerciseReferences);
 
-            workoutRepository.save(newDto);
+            workoutRepository.save(dto.get());
         } else {
             throw new NotFoundException(this.getClass().getName());
         }

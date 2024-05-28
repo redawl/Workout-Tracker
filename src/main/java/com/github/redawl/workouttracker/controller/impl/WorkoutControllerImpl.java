@@ -6,7 +6,7 @@ import com.github.redawl.workouttracker.exception.NotFoundException;
 import com.github.redawl.workouttracker.model.data.Workout;
 import com.github.redawl.workouttracker.service.WorkoutService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -30,10 +30,10 @@ public class WorkoutControllerImpl implements WorkoutController {
 
     @Override
     @GetMapping
-    public Workout getWorkoutByDate(@RequestParam LocalDate date, HttpServletResponse response) {
+    public Workout getWorkoutByDate(@RequestParam LocalDate date, HttpServletResponse response, Authentication auth) {
         try{
             response.setStatus(HttpServletResponse.SC_OK);
-            return workoutService.getWorkoutByDate(date, getUserJwt());
+            return workoutService.getWorkoutByDate(date, getUserJwt(auth));
         } catch (NotFoundException ex) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
@@ -42,10 +42,10 @@ public class WorkoutControllerImpl implements WorkoutController {
 
     @Override
     @DeleteMapping
-    public void removeWorkoutByDate(@RequestParam LocalDate date, HttpServletResponse response) {
+    public void removeWorkoutByDate(@RequestParam LocalDate date, HttpServletResponse response, Authentication auth) {
         try{
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            workoutService.removeWorkoutByDate(date, getUserJwt());
+            workoutService.removeWorkoutByDate(date, getUserJwt(auth));
         } catch (NotFoundException ex){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -53,10 +53,10 @@ public class WorkoutControllerImpl implements WorkoutController {
 
     @Override
     @PostMapping
-    public void addWorkout(@RequestBody Workout workout, HttpServletResponse response) {
+    public void addWorkout(@RequestBody Workout workout, HttpServletResponse response, Authentication auth) {
         try{
             response.setStatus(HttpServletResponse.SC_CREATED);
-            workoutService.addWorkout(workout, getUserJwt());
+            workoutService.addWorkout(workout, getUserJwt(auth));
         } catch (ExistsException ex) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
@@ -64,10 +64,10 @@ public class WorkoutControllerImpl implements WorkoutController {
 
     @Override
     @PutMapping
-    public void updateWorkout(@RequestBody Workout workout, HttpServletResponse response) {
+    public void updateWorkout(@RequestBody Workout workout, HttpServletResponse response, Authentication auth) {
         try {
             response.setStatus(HttpServletResponse.SC_OK);
-            workoutService.updateWorkout(workout, getUserJwt());
+            workoutService.updateWorkout(workout, getUserJwt(auth));
         } catch (NotFoundException ex){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -75,13 +75,13 @@ public class WorkoutControllerImpl implements WorkoutController {
 
     @Override
     @GetMapping("/all")
-    public List<Workout> getAllWorkouts() {
-        return workoutService.getWorkouts(getUserJwt());
+    public List<Workout> getAllWorkouts(Authentication auth) {
+        return workoutService.getWorkouts(getUserJwt(auth));
     }
 
-    private String getUserJwt(){
-        Object credentials = SecurityContextHolder.getContext().getAuthentication() == null ? null
-                : SecurityContextHolder.getContext().getAuthentication().getCredentials();
+    private String getUserJwt(Authentication auth){
+        Object credentials = auth == null ? null
+                : auth.getCredentials();
 
         if(credentials instanceof String userJwt){
             return userJwt;

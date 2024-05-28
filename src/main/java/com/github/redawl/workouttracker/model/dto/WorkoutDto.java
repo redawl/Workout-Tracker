@@ -1,5 +1,6 @@
 package com.github.redawl.workouttracker.model.dto;
 
+import com.github.redawl.workouttracker.model.data.Exercise;
 import com.github.redawl.workouttracker.model.data.Workout;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -71,5 +72,47 @@ public class WorkoutDto {
         dto.setUser(UserDto.from(userJwt));
 
         return dto;
+    }
+
+
+    public void merge(Workout workout, List<ExerciseReferenceDto> exerciseReferences) {
+
+        if(!this.getDate().equals(workout.getDate()))
+            throw new IllegalArgumentException("Merging workout must have same date");
+
+        // Remove deleted exercises
+        for(int i = getExercises().size() - 1; i >= 0; i--){
+            int finalI = i;
+            if(workout.getExercises().stream().noneMatch(exercise -> exercise.getName().equals(getExercises().get(finalI).getExerciseReference().getName()))){
+                getExercises().remove(i);
+            }
+        }
+
+        // Merge and add new exercises
+        for(Exercise exercise: workout.getExercises()){
+            ExerciseDto existingExercise = getExercises().stream()
+                    .filter(dto -> dto.getExerciseReference().getName().equals(exercise.getName())).findAny()
+                    .orElse(null);
+
+            if(existingExercise == null){
+                existingExercise = ExerciseDto.from(exercise, getUser().getId());
+                getExercises().add(existingExercise);
+                existingExercise.setWorkout(this);
+            }
+
+            if(exerciseReferences.stream()
+                    .noneMatch(exerciseReference -> exerciseReference.getName().equals(exercise.getName()))){
+                existingExercise.setExerciseReference(ExerciseReferenceDto.fromExercise(exercise, getUser().getId()));
+                existingExercise.getExerciseReference().setExercises(List.of(existingExercise));
+            } else {
+                ExerciseReferenceDto exerciseReferenceDto = exerciseReferences.stream()
+                        .filter(exerciseReference -> exerciseReference.getName().equals(exercise.getName()))
+                        .findAny()
+                        .orElseThrow();
+                exerciseReferenceDto.getExercises().add(existingExercise);
+                existingExercise.setExerciseReference(exerciseReferenceDto);
+            }
+            existingExercise.merge(exercise);
+        }
     }
 }
