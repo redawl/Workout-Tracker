@@ -5,13 +5,13 @@ import { Exercise } from '../workout-api-client/types.gen.js';
 
 export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSelect, parentOnChange }:
     {
-        exercises: Array<Exercise>, 
-        index: number, 
-        startingValue: string, 
+        exercises: Array<Exercise>,
+        index: number,
+        startingValue: string,
         parentOnSelect: (exercise: Exercise, index: number) => void,
         parentOnChange: (exerciseIndex: number, exerciseName: string) => void
     }) => {
-    const [value, setValue] = React.useState(startingValue);
+    const [value, setValue] = React.useState('');
     const [hint, setHint] = React.useState('');
     const [autocompleteOptions, setAutocompleteOptions] = React.useState([] as React.JSX.Element[]);
 
@@ -21,19 +21,13 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
     const autocompleteRef = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
-        parentOnChange(index, value);
-    }, [value, index, parentOnChange])
+        setValue(startingValue);
+    }, [startingValue]);
 
-    const onClear = () => {
-        setValue('');
-    };
-
-    const onChange = (_event: React.FormEvent<HTMLInputElement>, newValue: string) => {
+    React.useEffect(() => {
         if (
-            newValue !== '' &&
-            searchInputRef &&
-            searchInputRef.current &&
-            searchInputRef.current.contains(document.activeElement)
+            value !== '' &&
+            searchInputRef!.current!.contains(document.activeElement)
         ) {
             setIsAutocompleteOpen(true);
 
@@ -41,7 +35,7 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
             // Options which start with the search input value are listed first, followed by options which contain
             // the search input value.
             let options = exercises
-                .filter((option) => option.name.toLowerCase().startsWith(newValue.toLowerCase()))
+                .filter((option) => option.name.toLowerCase().startsWith(value.toLowerCase()))
                 .map((option, index) => (
                     <MenuItem itemId={option.name} key={index}>
                         {option.name}
@@ -53,9 +47,12 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
                 options = [
                     ...options,
                     ...exercises
-                        .filter((option) => !option.name.startsWith(newValue.toLowerCase()) && option.name.includes(newValue.toLowerCase()))
+                        .filter((option) => 
+                            !option.name.toLowerCase().startsWith(value.toLowerCase()) 
+                                && option.name.toLowerCase().includes(value.toLowerCase())
+                        )
                         .map((option, index) => (
-                            <MenuItem itemId={option} key={index}>
+                            <MenuItem itemId={option.name} key={index}>
                                 {option.name}
                             </MenuItem>
                         ))
@@ -70,7 +67,15 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
         } else {
             setIsAutocompleteOpen(false);
         }
+    }, [value, exercises]);
+
+    const onClear = () => {
+        setValue('');
+    };
+
+    const onChange = (_event: React.FormEvent<HTMLInputElement>, newValue: string) => {
         setValue(newValue);
+        parentOnChange(index, newValue);
     };
 
     // Whenever an autocomplete option is selected, set the search input value, close the menu, and put the browser
@@ -79,10 +84,8 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
         e && e.stopPropagation();
         setValue(itemId as string);
         setIsAutocompleteOpen(false);
-        console.log(exercises);
-        console.log(value);
         parentOnSelect(exercises.filter(exercise => exercise.name.toLowerCase() === (itemId as string).toLowerCase())[0], index);
-        searchInputRef.current && searchInputRef.current.focus();
+        searchInputRef.current!.focus();
     };
 
     const handleMenuKeys = (event: KeyboardEvent) => {
@@ -116,10 +119,10 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
             }
             // If the autocomplete is open and the browser focus is in the autocomplete menu
             // hitting tab will close the autocomplete and but browser focus back on the search input.
-        } else if (isAutocompleteOpen && autocompleteRef.current && autocompleteRef.current.contains(event.target as Node) && event.key === 'Tab') {
+        } else if (isAutocompleteOpen && autocompleteRef.current!.contains(event.target as Node) && event.key === 'Tab') {
             event.preventDefault();
             setIsAutocompleteOpen(false);
-            searchInputRef.current && searchInputRef.current.focus();
+            searchInputRef.current!.focus();
         }
     };
 
@@ -127,9 +130,7 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
     const handleClickOutside = (event: MouseEvent) => {
         if (
             isAutocompleteOpen &&
-            autocompleteRef &&
-            autocompleteRef.current &&
-            !autocompleteRef.current.contains(event.target as Node)
+            !autocompleteRef!.current!.contains(event.target as Node)
         ) {
             setIsAutocompleteOpen(false);
         }

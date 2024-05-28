@@ -44,11 +44,11 @@ export const Workouts = () => {
 
     React.useEffect(() => {
         ExerciseService.getExercises().then((references) => {
-            setExerciseReferences(references);
+            setExerciseReferences([...references]);
         }).catch((apiError: ApiError) => {
             console.error(apiError);
         });
-    }, []);
+    }, [workoutDate]);
 
     React.useEffect(() => {
         WorkoutService.getWorkoutByDate({ date: workoutDate })
@@ -219,11 +219,6 @@ export const Workouts = () => {
                                         exercises.map((exercise: Exercise, index) => (
                                             <Tr key={index}>
                                                 <Td>
-                                                    {/* <TextInput id={exercise.name} 
-                                                        value={exercise.name} 
-                                                        onChange={(_event, name: string) => updateName(index, name)}
-                                                        aria-label={exercise.name.length > 0 ? exercise.name : "Newly added workout"}
-                                                    /> */}
                                                     <SearchAutocomplete
                                                         exercises={exerciseReferences}
                                                         index={index}
