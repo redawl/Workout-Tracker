@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,7 +44,7 @@ public interface WorkoutController {
                     )
             }
     )
-    Workout getWorkoutByDate(LocalDate date, HttpServletResponse response, Authentication auth);
+    Workout getWorkoutByDate(LocalDate date, HttpServletResponse response);
 
     @Operation(
             summary = "Remove a workout by date",
@@ -67,7 +66,7 @@ public interface WorkoutController {
                     )
             }
     )
-    void removeWorkoutByDate(LocalDate date, HttpServletResponse response, Authentication auth);
+    void removeWorkoutByDate(LocalDate date, HttpServletResponse response);
 
     @Operation(
             summary = "Add a new workout",
@@ -84,7 +83,7 @@ public interface WorkoutController {
                     )
             }
     )
-    void addWorkout(Workout workout, HttpServletResponse response, Authentication auth);
+    void addWorkout(Workout workout, HttpServletResponse response);
 
     @Operation(
             summary = "Update a workout by date",
@@ -95,7 +94,7 @@ public interface WorkoutController {
                     )
             }
     )
-    void updateWorkout(Workout workout, HttpServletResponse response, Authentication auth);
+    void updateWorkout(Workout workout, HttpServletResponse response);
 
     @Operation(
             summary = "Retrieve all workouts",
@@ -113,5 +112,5 @@ public interface WorkoutController {
                     )
             }
     )
-    List<Workout> getAllWorkouts(Authentication auth);
+    List<Workout> getAllWorkouts();
 }

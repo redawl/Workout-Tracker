@@ -6,7 +6,6 @@ import com.github.redawl.workouttracker.model.dto.UserDto;
 import com.github.redawl.workouttracker.model.repository.ExerciseReferenceRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

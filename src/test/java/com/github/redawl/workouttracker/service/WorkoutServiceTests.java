@@ -16,6 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +37,9 @@ class WorkoutServiceTests {
 
     @Mock
     ExerciseReferenceRepository exerciseReferenceRepository;
+
+    @MockBean
+    Authentication authentication;
 
     @BeforeAll
     void setupTests(){

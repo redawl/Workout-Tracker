@@ -2,6 +2,7 @@ package com.github.redawl.workouttracker.controller.impl;
 
 import com.github.redawl.workouttracker.controller.ExerciseController;
 import com.github.redawl.workouttracker.exception.NotFoundException;
+import com.github.redawl.workouttracker.exception.UnauthorizedException;
 import com.github.redawl.workouttracker.model.data.Exercise;
 import com.github.redawl.workouttracker.service.ExerciseReferenceService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -55,6 +56,6 @@ public class ExerciseControllerImpl implements ExerciseController {
             return userJwt;
         }
 
-        throw new RuntimeException("Unauthorized user got to endpoint that requires authorization!");
+        throw new UnauthorizedException();
     }
 }
