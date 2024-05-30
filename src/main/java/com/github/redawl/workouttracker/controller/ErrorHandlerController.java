@@ -1,6 +1,5 @@
 package com.github.redawl.workouttracker.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.boot.web.servlet.error.ErrorController;

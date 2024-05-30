@@ -37,7 +37,7 @@ public class ExerciseControllerImpl implements ExerciseController {
 
     @Override
     @GetMapping
-    public Exercise getExerciseByName(String name, HttpServletResponse response) {
+    public Exercise getExerciseByName(@RequestParam String name, HttpServletResponse response) {
         try{
             response.setStatus(HttpServletResponse.SC_OK);
             return exerciseReferenceService.getExerciseByName(name, getUserJwt());
