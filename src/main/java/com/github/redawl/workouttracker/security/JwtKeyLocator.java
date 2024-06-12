@@ -35,7 +35,7 @@ public class JwtKeyLocator extends LocatorAdapter<Key> {
         if(response != null
                 && response.get(KEYS) != null
                 && response.get(KEYS).isArray()
-                && response.get(KEYS).size() == 2){
+                && response.get(KEYS).size() > 1){
             String token = response.get(KEYS).get(0).toString();
             Jwk<?> jwk = Jwks.parser()
                 .build()
