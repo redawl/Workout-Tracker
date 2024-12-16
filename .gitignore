@@ -40,3 +40,4 @@ build/
 
 ### Custom ###
 /src/main/resources/static
+/etc/systemd/workouttracker
