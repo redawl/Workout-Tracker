@@ -10,3 +10,4 @@ npm run build
 popd
 pushd "${DIR}/../"
 spring_profiles_active=local ./mvnw spring-boot:run
+

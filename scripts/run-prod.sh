@@ -12,3 +12,4 @@ npm run "build:prod"
 popd
 pushd "${DIR}/../"
 spring_profiles_active=prod ./mvnw spring-boot:run
+
