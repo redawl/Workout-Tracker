@@ -18,8 +18,6 @@ import java.util.List;
 @CrossOrigin(origins = {
         "https://workout.burchbytes.com",
         "http://127.0.0.1",
-        "http://localhost",
-        "http://192.168.50.180"
 })
 public class WorkoutControllerImpl implements WorkoutController {
     private final WorkoutService workoutService;

@@ -11,5 +11,5 @@ npm i
 npm run "build:prod"
 popd
 pushd "${DIR}/../"
-spring_profiles_active=prod ./mvnw spring-boot:run
-
+./mvnw clean package
+docker compose up -d --build

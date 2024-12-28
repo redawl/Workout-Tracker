@@ -17,12 +17,4 @@ then
   mv "/home/github/.env" "/home/github/Workout-Tracker"
 fi
 
-if [ ! -f "/home/github/.config/systemd/user/workouttracker.service" ];
-then
-  mkdir -p "/home/github/.config/systemd/user" || echo "Systemd user dir already exists"
-  ln -s "/home/github/Workout-Tracker/etc/systemd/workouttracker.service" "/home/github/.config/systemd/user/workouttracker.service"
-fi
-
-systemctl --user daemon-reload
-systemctl --user restart workouttracker
-
+"/home/github/Workout-Tracker/scripts/run-prod.sh"

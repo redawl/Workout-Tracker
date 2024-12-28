@@ -11,8 +11,6 @@ services:
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/initdb:/docker-entrypoint-initdb.d
-    ports:
-      - '127.0.0.1:5432:5432'
   supertokens-core:
     image: 'registry.supertokens.io/supertokens/supertokens-postgresql:9.0.2'
     depends_on:
@@ -34,23 +32,29 @@ services:
       - ./auth-server:/home/node/app
     working_dir: '/home/node/app'
     command: 'npm start'
+  workout-tracker:
+    build:
+      dockerfile: "Dockerfile"
+    depends_on:
+      - auth-server
+      - postgres
+    networks:
+      - app_network
+    environment:
+      - 'POSTGRES_DB=${POSTGRES_DB}'
+      - 'POSTGRES_PASS=${POSTGRES_PASS}'
+      - 'POSTGRES_USER=${POSTGRES_USER}'
+  nginx:
+    image: nginx:1.27.3
+    depends_on:
+      - auth-server
+      - workout-tracker
+    volumes:
+      - ./etc/nginx/worktracker:/etc/nginx/nginx.conf:ro
+    networks:
+      - app_network
     ports:
-      - "127.0.0.1:8000:8000"
-#  workout-tracker:
-#    image: workouttracker:0.0.1-SNAPSHOT
-#    depends_on:
-#      - auth-server
-#      - postgres
-#    networks:
-#      - app_network
-#    environment:
-#      - 'POSTGRES_DB=${POSTGRES_DB}'
-#      - 'POSTGRES_PASSWORD=${POSTGRES_PASS}'
-#      - 'POSTGRES_USER=${POSTGRES_USER}'
-#    expose:
-#      - "8080"
-#    ports:
-#      - "8080:8080"
+      - "80:80"
 
 networks:
   app_network:
