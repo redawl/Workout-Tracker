@@ -1,13 +1,9 @@
 package com.github.redawl.workouttracker.model.data;
-
-import com.github.redawl.workouttracker.model.dto.ExerciseDto;
 import com.github.redawl.workouttracker.model.dto.WorkoutDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

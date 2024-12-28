@@ -3,7 +3,6 @@ package com.github.redawl.workouttracker.service;
 import com.github.redawl.workouttracker.exception.ExistsException;
 import com.github.redawl.workouttracker.exception.NotFoundException;
 import com.github.redawl.workouttracker.model.data.Workout;
-import com.github.redawl.workouttracker.model.dto.ExerciseReferenceDto;
 import com.github.redawl.workouttracker.model.dto.UserDto;
 import com.github.redawl.workouttracker.model.dto.WorkoutDto;
 import com.github.redawl.workouttracker.model.repository.ExerciseReferenceRepository;
@@ -17,9 +16,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.util.List;

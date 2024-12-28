@@ -19,6 +19,7 @@ services:
       - app_network
     environment:
       POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@postgres:5432/supertokens"
+      DISABLE_TELEMETRY: true
   auth-server:
     image: 'node:18'
     depends_on:

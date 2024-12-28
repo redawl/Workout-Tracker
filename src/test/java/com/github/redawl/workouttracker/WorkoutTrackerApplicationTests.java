@@ -1,6 +1,5 @@
 package com.github.redawl.workouttracker;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

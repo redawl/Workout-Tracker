@@ -2,7 +2,6 @@ package com.github.redawl.workouttracker.model.dto;
 
 
 import com.github.redawl.workouttracker.model.data.Exercise;
-import com.github.redawl.workouttracker.model.data.Workout;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

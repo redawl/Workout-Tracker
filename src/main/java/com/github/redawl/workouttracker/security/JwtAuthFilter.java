@@ -35,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         if(request.getCookies() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             Optional<Jws<Claims>> jws = Arrays.stream(request.getCookies())
                     .filter(cookie -> cookie.getName().equals(S_ACCESS_TOKEN))
@@ -66,7 +66,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         return !request.getServletPath().contains("/api/");
     }
 }
