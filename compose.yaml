@@ -54,7 +54,7 @@ services:
     networks:
       - app_network
     ports:
-      - "80:80"
+      - "127.0.0.1:8080:80"
 
 networks:
   app_network:
