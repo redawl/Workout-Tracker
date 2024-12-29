@@ -11,7 +11,6 @@ import {
     ActionGroup,
     Button,
     ButtonVariant,
-//    TextInput,
     NumberInput,
     Alert
 } from '@patternfly/react-core';
@@ -27,9 +26,7 @@ import {
     Td
 } from '@patternfly/react-table'
 
-import { ExerciseService, WorkoutService } from '../workout-api-client/services.gen';
-import { Workout, Exercise } from '../workout-api-client/types.gen';
-import { ApiError } from '../workout-api-client';
+import { ApiError, Exercise, ExerciseService, Workout, WorkoutService } from '../workout-api-client';
 import { SearchAutocomplete } from '../components/SearchAutocomplete';
 
 export const Workouts = () => {
@@ -48,9 +45,6 @@ export const Workouts = () => {
         }).catch((apiError: ApiError) => {
             console.error(apiError);
         });
-    }, [workoutDate]);
-
-    React.useEffect(() => {
         WorkoutService.getWorkoutByDate({ date: workoutDate })
             .then((workout: Workout) => {
                     workoutExists.current = true;
@@ -80,43 +74,32 @@ export const Workouts = () => {
     }
 
     const removeExercise = (exerciseIndex: number) => {
-        setExercises(exercises.filter((_exercise, index) => index !== exerciseIndex));
+        setExercises(exercises.filter((_: Exercise, index: number) => index !== exerciseIndex));
     }
 
     const updateName = (exerciseIndex: number, exerciseName: string) => {
-        setExercises(exercises.map((exercise, index) => {
-            if(index === exerciseIndex) {
-                setUnsavedChanges(true);
-                return { ...exercise, name: exerciseName };
-            }
-            return exercise;
-        }))
+        setExercises(exercises.map(
+            (exercise: Exercise, index: number) => index === exerciseIndex ? { ...exercise, name: exerciseName } : exercise
+        ));
+        setUnsavedChanges(true);
     }
 
     const updateLbs = (exerciseIndex: number, lbs: number) => {
-        setExercises(exercises.map((exercise, index) => {
-            if(index === exerciseIndex) {
-                setUnsavedChanges(true);
-                return { ...exercise, lbs };
-            }
-
-            return exercise;
-        }));
+        setExercises(exercises.map(
+            (exercise: Exercise, index: number) => index === exerciseIndex ? { ...exercise, lbs } : exercise
+        ));
+        setUnsavedChanges(true);
     } 
 
     const updateSets = (exerciseIndex: number, sets: number) => {
-        setExercises(exercises.map((exercise, index) => {
-            if(index === exerciseIndex) {
-                setUnsavedChanges(true);
-                return { ...exercise, sets };
-            }
-
-            return exercise;
-        }));
+        setExercises(exercises.map(
+            (exercise: Exercise, index: number) => index === exerciseIndex ? { ...exercise, sets } : exercise
+        ));
+        setUnsavedChanges(true);
     }
     
     const updateReps = (exerciseIndex: number, reps: number) => {
-        setExercises(exercises.map((exercise, index) => {
+        setExercises(exercises.map((exercise: Exercise, index: number) => {
             if(index === exerciseIndex) {
                 setUnsavedChanges(true);
                 return { ...exercise, reps };
@@ -162,7 +145,7 @@ export const Workouts = () => {
     }
 
     const updateExercise = (exercise: Exercise, index: number) => {
-        setExercises(exercises.map((currExercise, exerciseIndex) => {
+        setExercises(exercises.map((currExercise: Exercise, exerciseIndex: number) => {
             if(exerciseIndex === index){
                 return {...exercise};
             }
@@ -216,7 +199,7 @@ export const Workouts = () => {
                                 </Thead>
                                 <Tbody>
                                     {
-                                        exercises.map((exercise: Exercise, index) => (
+                                        exercises.map((exercise: Exercise, index: number) => (
                                             <Tr key={index}>
                                                 <Td>
                                                     <SearchAutocomplete

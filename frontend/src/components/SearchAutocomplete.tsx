@@ -20,9 +20,9 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
     const searchInputRef = React.useRef<HTMLInputElement>(null);
     const autocompleteRef = React.useRef<HTMLInputElement>(null);
 
-    React.useEffect(() => {
+    if (value !== startingValue) {
         setValue(startingValue);
-    }, [startingValue]);
+    }
 
     React.useEffect(() => {
         if (
@@ -143,7 +143,6 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
             window.removeEventListener('keydown', handleMenuKeys);
             window.removeEventListener('click', handleClickOutside);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAutocompleteOpen, hint, searchInputRef.current]);
 
     const searchInput = (
