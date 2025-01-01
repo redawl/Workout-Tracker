@@ -23,6 +23,8 @@ jobs:
           java-version: '17'
       - name: Build jar
         run: ./mvnw package
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag workout-tracker:$(date +%s)
 
   deploy:
     needs:
@@ -57,5 +59,4 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag workout-tracker:$(date +%s)
+          
