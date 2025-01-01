@@ -35,7 +35,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build jar
-        run: ./mvnw package# Install the cosign tool except on PR
+        run: ./mvnw package
+      # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
