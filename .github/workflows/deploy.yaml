@@ -37,7 +37,7 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd ./frontend"
+          cd "./frontend"
           npm i
           npm run "build:prod"
           cd ..
