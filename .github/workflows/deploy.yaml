@@ -122,7 +122,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -i /tmp/ssh_key .env github@workout.burchbytes.com:.env
           
           echo "Running Deploy script"
-          ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key github@workout.burchbytes.com bash < ./scripts/deploy.sh
+          ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key github@workout.burchbytes.com docker compose up -d
 
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
