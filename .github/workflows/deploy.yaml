@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - main
-
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,12 +21,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Run Tests
-        run: ./mvnw test
+      - name: Build jar
+        run: ./mvnw package
 
   deploy:
     needs:
-      test
+      build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
