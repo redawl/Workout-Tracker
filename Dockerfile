@@ -1,4 +1,4 @@
-from eclipse-temurin:17
+FROM eclipse-temurin:17
 COPY ./target/workouttracker*.jar /app.jar
 
 ENV spring_profiles_active=local
