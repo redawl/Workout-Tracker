@@ -17,4 +17,5 @@ then
   mv "/home/github/.env" "/home/github/Workout-Tracker"
 fi
 
-"/home/github/Workout-Tracker/scripts/run-prod.sh"
+pushd "/home/github/Workout-Tracker"
+docker compose up -d 
