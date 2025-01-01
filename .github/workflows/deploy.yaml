@@ -34,6 +34,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Build frontend
+        run: |
+          cd ./frontend"
+          npm i
+          npm run "build:prod"
+          cd ..
       - name: Build jar
         run: ./mvnw package
       # Install the cosign tool except on PR
