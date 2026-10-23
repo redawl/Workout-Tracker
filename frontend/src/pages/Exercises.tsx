@@ -1,13 +1,13 @@
-import { 
-    Panel, 
-    PanelHeader, 
+import {
+    Panel,
+    PanelHeader,
     Title,
     Divider,
     PanelMain,
     PanelMainBody
 } from '@patternfly/react-core';
 
-import {     
+import {
     Thead,
     Tr,
     Th,
@@ -20,23 +20,27 @@ import React, { useEffect } from 'react';
 
 import { EXERCISES } from '../components/constants';
 
-import { ApiError, Exercise, ExerciseService } from '../workout-api-client';
+import { Exercise, getExercises } from '../workout-api-client';
 
 export const Exercises = () => {
-    const [ exercises, setExercises ] = React.useState([] as Array<Exercise>);
+    const [exercises, setExercises] = React.useState([] as Array<Exercise>);
 
     useEffect(() => {
-        ExerciseService.getExercises()
-        .then((resp) => {
-            setExercises(resp);
-        })
-        .catch((error: ApiError) => console.error(error));
+        getExercises()
+            .then(({ data, error }) => {
+                if (error || !data) {
+                    console.error(error, data)
+                    return
+                }
+                setExercises(data);
+            })
+            .catch((error) => console.error(error));
     }, []);
 
     return (
         <Panel>
             <PanelHeader>
-                <Title headingLevel='h2'>{ EXERCISES }</Title>
+                <Title headingLevel='h2'>{EXERCISES}</Title>
             </PanelHeader>
             <Divider />
             <PanelMain>
@@ -51,16 +55,16 @@ export const Exercises = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                        {
-                            exercises.map((exercise: Exercise, index: number) => (
-                                <Tr key={index}>
-                                    <Td>{exercise.name}</Td>
-                                    <Td>{exercise.lbs}</Td>
-                                    <Td>{exercise.reps}</Td>
-                                    <Td>{exercise.sets}</Td>
-                                </Tr>
-                            ))
-                        }
+                            {
+                                exercises.map((exercise: Exercise, index: number) => (
+                                    <Tr key={index}>
+                                        <Td>{exercise.name}</Td>
+                                        <Td>{exercise.lbs}</Td>
+                                        <Td>{exercise.reps}</Td>
+                                        <Td>{exercise.sets}</Td>
+                                    </Tr>
+                                ))
+                            }
                         </Tbody>
                     </Table>
                 </PanelMainBody>

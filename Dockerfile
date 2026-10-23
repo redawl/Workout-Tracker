@@ -1,8 +1,23 @@
-FROM eclipse-temurin:17
-COPY ./target/workouttracker*.jar /app.jar
+FROM node:latest AS node_base 
+ARG VITE_API_DOMAIN
+ENV VITE_API_DOMAIN $VITE_API_DOMAIN
+COPY frontend .
+RUN npm ci
+RUN npm run build
 
-ENV spring_profiles_active=local
+FROM golang:1.27
+ARG ENVIRONMENT
 
-EXPOSE 8080
+WORKDIR /usr/src/app
+COPY --from=node_base ./out/ ./staticDir
 
-CMD ["java", "-jar", "/app.jar"]
+# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -v -o /usr/local/bin/app -tags $ENVIRONMENT .
+
+CMD ["app"]
+

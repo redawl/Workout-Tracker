@@ -1,10 +1,10 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import {
     Page,
     Masthead,
     MastheadToggle,
     MastheadMain,
-    MastheadBrand,
+    MastheadLogo, MastheadBrand,
     MastheadContent,
     PageSidebar,
     PageSidebarBody,
@@ -18,40 +18,36 @@ import {
     Button,
     ToggleGroup,
     ToggleGroupItem,
-    PageSidebarProps,
     ToolbarGroup,
-    Brand,
-    Title,
-    TextVariants
 } from '@patternfly/react-core';
-import { GithubIcon, BarsIcon, SunIcon, MoonIcon } from '@patternfly/react-icons';
-import { Workouts } from '../pages/Workouts';
-import { Exercises } from '../pages/Exercises';
-import { Reports } from '../pages/Reports';
+import { GithubIcon, SunIcon, MoonIcon } from '@patternfly/react-icons';
 import { WORKOUTS, EXERCISES, REPORTS, DARK, LIGHT, DOCUMENTATION } from './constants';
-import { Documentation } from '../pages/Documentation';
 import { signOut } from "supertokens-auth-react/recipe/emailpassword";
+import { Workouts } from '../pages/Workouts.tsx';
+import { Exercises } from '../pages/Exercises.tsx';
+import { Reports } from '../pages/Reports.tsx';
+import { Documentation } from '../pages/Documentation.tsx';
 
 export const Navigation = () => {
-    const [ isSidebarOpen, setIsSidebarOpen ] = React.useState(true);
-    const [ currentPage, setCurrentPage ] = React.useState(WORKOUTS);
-    const [ theme, setTheme ] = React.useState('dark' as PageSidebarProps["theme"]);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [currentPage, setCurrentPage] = useState(WORKOUTS as string | number);
+    const [theme, setTheme] = useState(DARK);
 
-    async function logOut(){
+    async function logOut() {
         await signOut();
         window.location.href = '/auth';
     }
 
-    React.useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') as PageSidebarProps["theme"];
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
         const html = document.getElementsByTagName('html')[0];
 
-        if(savedTheme === DARK){
-            html.className = 'pf-v5-theme-dark';
+        if (savedTheme === DARK) {
+            html.className = 'pf-v6-theme-glass pf-v6-theme-dark';
             setTheme(DARK);
             localStorage.setItem('theme', DARK);
         } else {
-            html.className = '';
+            html.className = 'pf-v6-theme-glass';
             setTheme(LIGHT);
             localStorage.setItem('theme', LIGHT);
         }
@@ -62,16 +58,16 @@ export const Navigation = () => {
     };
 
     const toggleDarkMode = ((currentTarget: string, isSelected: boolean) => {
-        if(!isSelected) return;
+        if (!isSelected) return;
 
         const html = document.getElementsByTagName('html')[0];
 
-        if(currentTarget === DARK){
-            html.className = 'pf-v5-theme-dark';
+        if (currentTarget === DARK) {
+            html.className = 'pf-v6-theme-glass pf-v6-theme-dark';
             setTheme(DARK);
             localStorage.setItem('theme', DARK);
         } else {
-            html.className = '';
+            html.className = 'pf-v6-theme-glass';
             setTheme(LIGHT);
             localStorage.setItem('theme', LIGHT);
         }
@@ -80,33 +76,28 @@ export const Navigation = () => {
     const headerToolbar = (
         <Toolbar id="vertical-toolbar">
             <ToolbarContent>
-                <ToolbarItem>
-                    <Title headingLevel={TextVariants.h1} >
-                        Workout Tracker
-                    </Title>
-                </ToolbarItem>
-                <ToolbarGroup align={{ default: "alignRight" }}>
+                <ToolbarGroup align={{ default: "alignEnd" }}>
                     <ToolbarItem>
                         <ToggleGroup>
-                            <ToggleGroupItem 
-                                icon={<SunIcon/>}
+                            <ToggleGroupItem
+                                icon={<SunIcon />}
                                 aria-label="Light theme"
-                                buttonId={ LIGHT }
-                                isSelected= { theme === LIGHT }
+                                buttonId={LIGHT}
+                                isSelected={theme === LIGHT}
                                 onChange={(event, isSelected: boolean) => toggleDarkMode(event.currentTarget.id, isSelected)}
                             />
-                            <ToggleGroupItem 
-                                icon={<MoonIcon/>}
+                            <ToggleGroupItem
+                                icon={<MoonIcon />}
                                 aria-label="Dark theme"
-                                buttonId={ DARK }
-                                isSelected={ theme === DARK }
+                                buttonId={DARK}
+                                isSelected={theme === DARK}
                                 onChange={(event, isSelected: boolean) => toggleDarkMode(event.currentTarget.id, isSelected)}
                             />
                         </ToggleGroup>
                     </ToolbarItem>
                     <ToolbarItem>
-                        <Button 
-                            variant='link' 
+                        <Button
+                            variant='link'
                             href="https://github.com/redawl/Workout-Tracker"
                             icon={<GithubIcon />}
                             component='a'
@@ -124,20 +115,22 @@ export const Navigation = () => {
 
     const header = (
         <Masthead>
-            <MastheadToggle width='100px'>
-                <PageToggleButton
-                    variant="plain"
-                    aria-label="Global navigation"
-                    isSidebarOpen={isSidebarOpen}
-                    onSidebarToggle={onSidebarToggle}
-                    id="vertical-nav-toggle"
-                >
-                    <BarsIcon />
-                </PageToggleButton>
-            </MastheadToggle>
             <MastheadMain>
-                <MastheadBrand href="/" target="_blank">
-                    <Brand alt='icon' src='/icon.png' widths={{ default: '100px'}}/>
+                <MastheadToggle>
+                    <PageToggleButton
+                        isHamburgerButton
+                        variant="plain"
+                        isSidebarOpen={isSidebarOpen}
+                        onSidebarToggle={onSidebarToggle}
+                    />
+                </MastheadToggle>
+                <MastheadBrand>
+                    <MastheadLogo href="/" target="_blank">
+                        <svg viewBox="0 0 679 158">
+                            <title>Workout Tracker</title>
+                            <image href='/icon.png' height='100%' />
+                        </svg>
+                    </MastheadLogo>
                 </MastheadBrand>
             </MastheadMain>
             <MastheadContent>{headerToolbar}</MastheadContent>
@@ -145,9 +138,11 @@ export const Navigation = () => {
     );
 
     const sidebar = (
-        <PageSidebar theme={ theme } isSidebarOpen={isSidebarOpen} id="vertical-sidebar">
+        <PageSidebar isSidebarOpen={isSidebarOpen}>
             <PageSidebarBody>
-                <Nav theme={ theme } onSelect={(_event: React.FormEvent<HTMLInputElement>, result: { itemId: number | string }) => { setCurrentPage(result.itemId as string); }} aria-label="Grouped global">
+                <Nav
+                    onSelect={(_, result) => setCurrentPage(result.itemId)}
+                >
                     <NavItem
                         preventDefault
                         itemId={WORKOUTS}
@@ -182,7 +177,7 @@ export const Navigation = () => {
     );
 
     return (
-        <Page header={header} sidebar={sidebar}>
+        <Page masthead={header} sidebar={sidebar}>
             <PageSection>
                 {
                     currentPage === WORKOUTS ? (

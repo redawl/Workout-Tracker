@@ -1,4 +1,10 @@
-import { Chart, ChartAxis, ChartGroup, ChartLine, ChartThemeColor } from '@patternfly/react-charts';
+import {
+	Chart,
+	ChartAxis,
+	ChartGroup,
+	ChartLine,
+	ChartThemeColor
+} from '@patternfly/react-charts/victory';
 import { Exercise, Workout } from '../../workout-api-client';
 
 export const LineChart = ({ workouts }: { workouts: Array<Workout> }) => {
