@@ -1,0 +1,291 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "\"Workout Tracker API\"",
+    "description": "\"Workout Tracker App API\"",
+    "contact": {
+      "name": "Eli Burch",
+      "url": "https://burchbytes.com",
+      "email": "eli.burch@burchbytes.com"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://workout.burchbytes.com",
+      "description": "Server Url"
+    },
+    {
+      "url": "http://localhost:8080",
+      "description": "dev Url"
+    }
+  ],
+  "security": [
+    {"sAccessToken":[]}
+  ],
+  "tags": [
+    {
+      "name": "Workout",
+      "description": "Manage workouts"
+    },
+    {
+      "name": "Exercise",
+      "description": "Manage exercises"
+    }
+  ],
+  "paths": {
+    "/api/workout": {
+      "get": {
+        "tags": [
+          "Workout"
+        ],
+        "summary": "Retrieve a workout by date",
+        "operationId": "getWorkoutByDate",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok - Workout was found for given date",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workout"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Workout was not found for given date"
+          }, 
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Workout"
+        ],
+        "summary": "Update a workout by date",
+        "operationId": "updateWorkout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workout"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok - Workout was successfully updated",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/Workout"
+                    }
+                }
+            }
+          },
+          "404": {
+            "description": "Not Found - Workout was not found for given date"
+          }, 
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Workout"
+        ],
+        "summary": "Add a new workout",
+        "operationId": "addWorkout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workout"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created - Workout was created successfully",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "$ref": "#/components/schemas/Workout"
+                    }
+                }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Workout already exists for specified date"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Workout"
+        ],
+        "summary": "Remove a workout by date",
+        "operationId": "removeWorkoutByDate",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content - Workout was removed successfully"
+          },
+          "404": {
+            "description": "Not Found - Workout was not found for specified date"
+          },
+          "400": {
+            "description": "Bad Request - Date was missing or invalid"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/workout/all": {
+      "get": {
+        "tags": [
+          "Workout"
+        ],
+        "summary": "Retrieve all workouts",
+        "operationId": "getAllWorkouts",
+        "responses": {
+          "200": {
+            "description": "Ok - All workouts were retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Workout"
+                  }
+                }
+              }
+            }
+          }, 
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/exercise/all": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "summary": "Retrieve all existing exercises",
+        "operationId": "getExercises",
+        "responses": {
+          "200": {
+            "description": "Ok - exercise were received successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Exercise"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Exercise": {
+        "required": [
+          "lbs",
+          "name",
+          "reps",
+          "sets"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lbs": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sets": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Workout": {
+        "required": [
+          "date",
+          "exercises"
+        ],
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "exercises": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Exercise"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "sAccessToken": {
+        "type": "apiKey",
+        "description": "Jwt Cookie Authentication",
+        "name": "sAccessToken",
+        "in": "cookie",
+        "scheme": "Bearer"
+      }
+    }
+  }
+}

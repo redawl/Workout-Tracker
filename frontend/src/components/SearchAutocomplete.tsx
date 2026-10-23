@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Menu, MenuContent, MenuItem, MenuList, Popper, SearchInput } from '@patternfly/react-core';
 
 import { Exercise } from '../workout-api-client/types.gen.js';
@@ -11,20 +11,20 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
         parentOnSelect: (exercise: Exercise, index: number) => void,
         parentOnChange: (exerciseIndex: number, exerciseName: string) => void
     }) => {
-    const [value, setValue] = React.useState('');
-    const [hint, setHint] = React.useState('');
-    const [autocompleteOptions, setAutocompleteOptions] = React.useState([] as React.JSX.Element[]);
+    const [value, setValue] = useState('');
+    const [hint, setHint] = useState('');
+    const [autocompleteOptions, setAutocompleteOptions] = useState([] as React.ReactElement[]);
 
-    const [isAutocompleteOpen, setIsAutocompleteOpen] = React.useState(false);
+    const [isAutocompleteOpen, setIsAutocompleteOpen] = useState(false);
 
-    const searchInputRef = React.useRef<HTMLInputElement>(null);
-    const autocompleteRef = React.useRef<HTMLInputElement>(null);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+    const autocompleteRef = useRef<HTMLInputElement>(null);
 
     if (value !== startingValue) {
         setValue(startingValue);
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (
             value !== '' &&
             searchInputRef!.current!.contains(document.activeElement)
@@ -47,9 +47,9 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
                 options = [
                     ...options,
                     ...exercises
-                        .filter((option) => 
-                            !option.name.toLowerCase().startsWith(value.toLowerCase()) 
-                                && option.name.toLowerCase().includes(value.toLowerCase())
+                        .filter((option) =>
+                            !option.name.toLowerCase().startsWith(value.toLowerCase())
+                            && option.name.toLowerCase().includes(value.toLowerCase())
                         )
                         .map((option, index) => (
                             <MenuItem itemId={option.name} key={index}>
@@ -85,7 +85,6 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
         setValue(itemId as string);
         setIsAutocompleteOpen(false);
         parentOnSelect(exercises.filter(exercise => exercise.name.toLowerCase() === (itemId as string).toLowerCase())[0], index);
-        searchInputRef.current!.focus();
     };
 
     const handleMenuKeys = (event: KeyboardEvent) => {
@@ -136,7 +135,7 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener('keydown', handleMenuKeys);
         window.addEventListener('click', handleClickOutside);
         return () => {

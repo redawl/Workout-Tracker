@@ -9,8 +9,10 @@ services:
       - 'POSTGRES_USER=${POSTGRES_USER}'
       - 'PG_DATA=/var/lib/postgresql/data/pgdata'
     volumes:
-      - ./postgres/data:/var/lib/postgresql/data
-      - ./postgres/initdb:/docker-entrypoint-initdb.d
+      - ./_postgres/data:/var/lib/postgresql/data
+      # - ./_postgres/initdb:/docker-entrypoint-initdb.d
+    ports:
+      - "127.0.0.1:5432:5432"
   supertokens-core:
     image: 'registry.supertokens.io/supertokens/supertokens-postgresql:9.3.0'
     depends_on:
@@ -20,43 +22,33 @@ services:
     environment:
       POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@postgres:5432/supertokens"
       DISABLE_TELEMETRY: true
-  auth-server:
-    image: 'node:18'
-    depends_on:
-      - supertokens-core
-    networks:
-      - app_network
-    environment:
-      API_DOMAIN: "${API_DOMAIN}"
-    user: 'node'
-    volumes:
-      - ./auth-server:/home/node/app
-    working_dir: '/home/node/app'
-    command: 'npm start'
   workout-tracker:
-    image: 'ghcr.io/redawl/workout-tracker:main'
+    image: 'burchbytes/workout_api'
     build:
-      dockerfile: "Dockerfile"
+      context: "."
+      args:
+        - 'VITE_API_DOMAIN=${API_DOMAIN}'
+        - 'ENVIRONMENT=prod'
     depends_on:
-      - auth-server
       - postgres
+      - supertokens-core
     networks:
       - app_network
     environment:
       - 'POSTGRES_DB=${POSTGRES_DB}'
       - 'POSTGRES_PASS=${POSTGRES_PASS}'
       - 'POSTGRES_USER=${POSTGRES_USER}'
+      - 'API_DOMAIN=${API_DOMAIN}'
   nginx:
     image: nginx:1.27.3
     depends_on:
-      - auth-server
       - workout-tracker
     volumes:
       - ./etc/nginx/worktracker:/etc/nginx/nginx.conf:ro
     networks:
       - app_network
     ports:
-      - "127.0.0.1:8080:80"
+      - "${API_DOMAIN}:80"
 
 networks:
   app_network:

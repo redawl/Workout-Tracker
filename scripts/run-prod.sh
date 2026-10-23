@@ -6,10 +6,9 @@ echo "sourcing .profile"
 
 DIR=$(dirname "${0}")
 
-pushd "${DIR}/../frontend"
-npm i
-npm run "build:prod"
-popd
-pushd "${DIR}/../"
-./mvnw clean package
+# Run migrations
+docker compose up -d postgres
+./goose.sh up
+docker compose down
+
 docker compose up -d --build

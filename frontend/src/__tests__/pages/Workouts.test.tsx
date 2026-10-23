@@ -1,19 +1,17 @@
 import { render, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import { Workouts } from '../../pages/Workouts';
 
-jest.mock('../../workout-api-client', () => {
+vi.mock('../../workout-api-client', () => {
     return {
-        ApiError: '',
         Exercise: '',
-        ExerciseService: {
-            getExercises: jest.fn(() => Promise.resolve([])),
-        },
-        Workout: '',
-        WorkoutService: {
-            getWorkoutByDate: jest.fn(() => Promise.reject({
+        getExercises: vi.fn(() => Promise.resolve({ data: [], error: null })),
+        getWorkoutByDate: vi.fn(() => Promise.resolve({
+            error: {},
+            response: {
                 status: 404
-            })),
-        },
+            },
+        })),
     };
 })
 
