@@ -1,7 +1,7 @@
 -- +goose NO TRANSACTION
 -- +goose Up
 
--- CREATE DATABASE supertokens;
+CREATE DATABASE supertokens;
 CREATE TABLE IF NOT EXISTS WT_USER (
     id varchar(36) primary key
 );

@@ -17,7 +17,7 @@ ALTER TABLE WORKOUT DROP CONSTRAINT fk_user_id;
 ALTER TABLE WORKOUT ADD CONSTRAINT fk_user_id foreign key (user_id) references WT_USER (id);
 
 ALTER TABLE EXERCISE DROP CONSTRAINT fk_workout_id;
-ALTER TABLE EXERCISE ADD CONSTRAINT fk_workout_id foreign key (workout_id) references WORKOUT (id) ON DELETE CASCADE;
+ALTER TABLE EXERCISE ADD CONSTRAINT fk_workout_id foreign key (workout_id) references WORKOUT (id);
 
 CREATE TABLE IF NOT EXISTS EXERCISE_REFERENCE (
     id BIGSERIAL primary key,
@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS EXERCISE_REFERENCE (
     UNIQUE(name, user_id)
 );
 
+INSERT INTO EXERCISE_REFERENCE (name, user_id) SELECT DISTINCT name, user_id from EXERCISE;
 ALTER TABLE EXERCISE ADD COLUMN exercise_reference_id BIGSERIAL;
+UPDATE EXERCISE SET exercise_reference_id = exercise_reference.id FROM exercise_reference WHERE exercise.name = exercise_reference.name;
 ALTER TABLE EXERCISE ADD CONSTRAINT fk_exercise_id foreign key (exercise_reference_id) references EXERCISE_REFERENCE (id);
-INSERT INTO EXERCISE_REFERENCE (name, user_id) SELECT name, user_id from EXERCISE;
 ALTER TABLE EXERCISE DROP COLUMN name;
