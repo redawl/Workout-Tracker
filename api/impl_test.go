@@ -220,9 +220,10 @@ func TestUpdateWorkout(t *testing.T) {
 	date := mustBindDate(t, "2026-09-17")
 
 	for _, tt := range []struct {
-		Name          string
-		AddWorkouts   []Workout
-		UpdateWorkout Workout
+		Name           string
+		AddWorkouts    []Workout
+		UpdateWorkout  Workout
+		ResultWorkouts []Workout
 	}{
 		{
 			Name: "updating single exercise",
@@ -238,6 +239,14 @@ func TestUpdateWorkout(t *testing.T) {
 				Date: date,
 				Exercises: []Exercise{
 					{50, "Chest Press", 8, 4},
+				},
+			},
+			ResultWorkouts: []Workout{
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{50, "Chest Press", 8, 4},
+					},
 				},
 			},
 		},
@@ -258,6 +267,15 @@ func TestUpdateWorkout(t *testing.T) {
 					{50, "Chest Press", 8, 4},
 				},
 			},
+			ResultWorkouts: []Workout{
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{40, "Bicep Curl", 8, 4},
+						{50, "Chest Press", 8, 4},
+					},
+				},
+			},
 		},
 		{
 			Name: "remove exercise from existing workout",
@@ -276,6 +294,14 @@ func TestUpdateWorkout(t *testing.T) {
 					{50, "Chest Press", 8, 4},
 				},
 			},
+			ResultWorkouts: []Workout{
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{50, "Chest Press", 8, 4},
+					},
+				},
+			},
 		},
 		{
 			Name: "remove all exercises from existing workout",
@@ -292,6 +318,12 @@ func TestUpdateWorkout(t *testing.T) {
 				Date:      date,
 				Exercises: []Exercise{},
 			},
+			ResultWorkouts: []Workout{
+				{
+					Date:      date,
+					Exercises: []Exercise{},
+				},
+			},
 		},
 		{
 			Name: "add multiple exercises to existing workout",
@@ -306,6 +338,15 @@ func TestUpdateWorkout(t *testing.T) {
 				Exercises: []Exercise{
 					{40, "Bicep Curl", 8, 4},
 					{50, "Chest Press", 8, 4},
+				},
+			},
+			ResultWorkouts: []Workout{
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{40, "Bicep Curl", 8, 4},
+						{50, "Chest Press", 8, 4},
+					},
 				},
 			},
 		},
@@ -327,10 +368,7 @@ func TestUpdateWorkout(t *testing.T) {
 					{50, "Chest Press", 8, 4},
 				},
 			},
-		},
-		{
-			Name: "add two workouts, update 1 workout",
-			AddWorkouts: []Workout{
+			ResultWorkouts: []Workout{
 				{
 					Date: date,
 					Exercises: []Exercise{
@@ -338,6 +376,11 @@ func TestUpdateWorkout(t *testing.T) {
 						{50, "Chest Press", 8, 4},
 					},
 				},
+			},
+		},
+		{
+			Name: "add two workouts, update 1 workout",
+			AddWorkouts: []Workout{
 				{
 					Date: types.Date{Time: date.Add(24 * time.Hour)},
 					Exercises: []Exercise{
@@ -345,12 +388,35 @@ func TestUpdateWorkout(t *testing.T) {
 						{60, "Chest Press", 8, 4},
 					},
 				},
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{40, "Bicep Curl", 8, 4},
+						{50, "Chest Press", 8, 4},
+					},
+				},
 			},
 			UpdateWorkout: Workout{
 				Date: date,
 				Exercises: []Exercise{
-					{40, "Bicep Curl", 8, 4},
-					{50, "Chest Press", 8, 4},
+					{45, "Bicep Curl", 8, 4},
+					{55, "Chest Press", 8, 4},
+				},
+			},
+			ResultWorkouts: []Workout{
+				{
+					Date: types.Date{Time: date.Add(24 * time.Hour)},
+					Exercises: []Exercise{
+						{50, "Bicep Curl", 8, 4},
+						{60, "Chest Press", 8, 4},
+					},
+				},
+				{
+					Date: date,
+					Exercises: []Exercise{
+						{45, "Bicep Curl", 8, 4},
+						{55, "Chest Press", 8, 4},
+					},
 				},
 			},
 		},
@@ -390,6 +456,12 @@ func TestUpdateWorkout(t *testing.T) {
 			okResponse := updateResponse.(UpdateWorkout200JSONResponse)
 			assert.Equal(t, tt.UpdateWorkout.Date, okResponse.Date)
 			assert.ElementsMatch(t, tt.UpdateWorkout.Exercises, okResponse.Exercises)
+
+			getResponse, err := workoutAPI.GetAllWorkouts(ctx, GetAllWorkoutsRequestObject{})
+			assert.Nil(t, err)
+			assert.IsType(t, GetAllWorkouts200JSONResponse{}, getResponse)
+			okGetResponse := getResponse.(GetAllWorkouts200JSONResponse)
+			assert.ElementsMatch(t, tt.ResultWorkouts, okGetResponse)
 		})
 	}
 }

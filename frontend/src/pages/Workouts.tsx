@@ -35,7 +35,7 @@ export const Workouts = () => {
     const [saveSuccess, setSaveSuccess] = useState(false);
     const [saveFailureMessage, setSaveFailureMessage] = useState('');
     const [unsavedChanges, setUnsavedChanges] = useState(false);
-    const [exerciseReferences, setExerciseReferences] = useState([] as Array<Exercise>);
+    const [exerciseReferences, setExerciseReferences] = useState([] as Exercise[]);
 
     const workoutExists = useRef(false);
 
@@ -43,15 +43,20 @@ export const Workouts = () => {
         const fetchData = async () => {
             const { data: exercises, error: exerciseError } = await getExercises();
 
-            if (exerciseError) {
+            if (exerciseError || !exercises?.length) {
                 console.error(exerciseError);
                 return;
             }
-            setExerciseReferences([...exercises!]);
+            setExerciseReferences([...exercises]);
 
             const { data: workout, error: workoutError, response } = await getWorkoutByDate({ query: { date: workoutDate } });
 
-            if (workoutError) {
+            if (workout?.date !== workoutDate) {
+                console.error(`API response does not match current date. API Response (${workout?.date}), Current date: ${workoutDate}`);
+                return;
+            }
+
+            if (workoutError || !workout) {
                 if (response?.status === 404) {
                     workoutExists.current = false;
                     setExercises([]);
@@ -61,7 +66,7 @@ export const Workouts = () => {
                 return;
             }
             workoutExists.current = true;
-            setExercises(workout!.exercises);
+            setExercises(workout.exercises);
             setUnsavedChanges(false);
         }
 
@@ -118,14 +123,15 @@ export const Workouts = () => {
 
     const handleUpdateWorkout = async () => {
         if (workoutExists.current) {
-            const { error } = await updateWorkout({
+            const { response } = await updateWorkout({
                 body: {
                     date: workoutDate,
                     exercises
                 }
             })
-            if (error) {
-                setSaveFailureMessage(error.toString());
+            if (response?.status !== 200) {
+                setSaveSuccess(false);
+                setSaveFailureMessage(`Save response returned ${response?.status}`);
                 return;
             }
             setSaveSuccess(true);

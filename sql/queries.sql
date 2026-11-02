@@ -24,6 +24,7 @@ JOIN WORKOUT ON exercise.workout_id = workout.id
 WHERE exercise.user_id = $1 AND (name, workout_date) in (
     SELECT name, MAX(workout_date) from EXERCISE
     JOIN WORKOUT ON exercise.workout_id = workout.id
+    WHERE exercise.user_id = $1
     GROUP BY name
 );
 

@@ -23,6 +23,7 @@ type WorkoutAPI struct {
 // (POST /api/workout)
 func (w *WorkoutAPI) AddWorkout(ctx context.Context, request AddWorkoutRequestObject) (AddWorkoutResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
+	defer tx.Rollback(ctx)
 	if err != nil {
 		return AddWorkout500Response{}, err
 	}
@@ -218,6 +219,7 @@ func (w *WorkoutAPI) GetWorkoutByDate(ctx context.Context, request GetWorkoutByD
 // (DELETE /api/workout)
 func (w *WorkoutAPI) RemoveWorkoutByDate(ctx context.Context, request RemoveWorkoutByDateRequestObject) (RemoveWorkoutByDateResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
+	defer tx.Rollback(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -248,6 +250,7 @@ func (w *WorkoutAPI) RemoveWorkoutByDate(ctx context.Context, request RemoveWork
 // (PUT /api/workout)
 func (w *WorkoutAPI) UpdateWorkout(ctx context.Context, request UpdateWorkoutRequestObject) (UpdateWorkoutResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
+	defer tx.Rollback(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +313,7 @@ func (w *WorkoutAPI) UpdateWorkout(ctx context.Context, request UpdateWorkoutReq
 		} else {
 			savedExercise, err := queries.UpdateExercise(ctx, sql.UpdateExerciseParams{
 				UserID: userID,
-				ID:     workout.ID,
+				ID:     existingExercise.ID,
 				Name:   pgtype.Text{String: exercise.Name, Valid: true},
 				Lbs:    pgtype.Int4{Int32: exercise.Lbs, Valid: true},
 				Reps:   pgtype.Int4{Int32: exercise.Reps, Valid: true},

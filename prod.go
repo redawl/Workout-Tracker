@@ -30,7 +30,7 @@ func printEnv() {
 
 func initCORS(env *Env) *cors.Cors {
 	return cors.New(cors.Options{
-		AllowedOrigins: []string{env.APIDomain},
+		AllowedOrigins: []string{"*://" + env.APIDomain},
 		AllowedMethods: []string{"*"},
 	})
 }
@@ -78,8 +78,11 @@ func createAuthMiddleware() api.StrictMiddlewareFunc {
 			default:
 				session, err := session.GetSession(r, w, nil)
 				if err != nil {
-					supertokens.ErrorHandler(err, r, w, nil)
-					return request, err
+					err := supertokens.ErrorHandler(err, r, w, nil)
+					if err != nil {
+						return nil, fmt.Errorf("processing unauthenticated request: %w", err)
+					}
+					return nil, nil
 				}
 
 				sessionCtx := context.WithValue(ctx, api.SessionKey{}, session)

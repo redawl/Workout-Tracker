@@ -18,7 +18,7 @@ func main() {
 
 	authHandler, err := initAuth(env)
 	if err != nil {
-		log.Fatal("Error initializing auth: %w", err)
+		log.Fatalf("Error initializing auth: %v", err)
 	}
 
 	c := initCORS(env)

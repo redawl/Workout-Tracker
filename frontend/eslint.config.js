@@ -1,26 +1,21 @@
 // @ts-check
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import js from "@eslint/js";
 import reactRefresh from "eslint-plugin-react-refresh";
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
+  globalIgnores(["dist", "src/workout-api-client"]),
   {
-    // root: true,
-    // env: { browser: true, es2020: true },
-    files: ["**/*.{js,ts}"],
+    files: ["**/*.{tsx,jsx,js,ts}"],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       tseslint.configs.recommended,
       tseslint.configs.stylistic,
       tseslint.configs.strict,
-      // "recommended",
-      // "plugin:react/jsx-runtime",
     ],
-    ignores: ["dist", ".eslintrc.cjs", "src/workout-api-client"],
-    // parser: "@typescript-eslint/parser",
     plugins: {
       "react-refresh": reactRefresh,
       js,

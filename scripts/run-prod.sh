@@ -7,7 +7,7 @@ echo "sourcing .profile"
 DIR=$(dirname "${0}")
 
 # Run migrations
-docker compose up -d postgres
+docker compose up -d --wait postgres
 ./goose.sh up
 docker compose down
 

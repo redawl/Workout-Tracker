@@ -9,7 +9,7 @@ services:
       - 'POSTGRES_USER=${POSTGRES_USER}'
       - 'PG_DATA=/var/lib/postgresql/data/pgdata'
     volumes:
-      - ./_postgres/data:/var/lib/postgresql/data
+      - /tmp/data:/var/lib/postgresql/data
       # - ./_postgres/initdb:/docker-entrypoint-initdb.d
     ports:
       - "127.0.0.1:5432:5432"

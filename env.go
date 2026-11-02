@@ -23,20 +23,20 @@ type Env struct {
 }
 
 func GetEnv() *Env {
-	fileEnv := getFromFile()
+	fileEnv := getFromFile(".env")
 	if fileEnv != nil {
 		return fileEnv
 	}
 
-	environEnv := GetFromEnvironment()
+	environEnv := getFromEnvironment(os.Environ())
 
 	return environEnv
 }
 
-func getFromFile() *Env {
+func getFromFile(filename string) *Env {
 	env := &Env{}
 
-	f, err := os.Open(".env")
+	f, err := os.Open(filename)
 	if err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
 			log.Printf("Warning: error reading from .env, ignoring: %v\n", err)
@@ -45,17 +45,11 @@ func getFromFile() *Env {
 		return nil
 	}
 
-	reader := bufio.NewReader(f)
+	scanner := bufio.NewScanner(f)
 
-	err = nil
+	for scanner.Scan() {
+		line := scanner.Text()
 
-	for err == nil {
-		var line string
-		line, err = reader.ReadString('\n')
-		if err != nil {
-			// TODO: Do we need to check if line has stuff here?
-			break
-		}
 		line = strings.TrimSuffix(line, "\n")
 		if len(line) == 0 {
 			continue
@@ -83,7 +77,7 @@ func getFromFile() *Env {
 	return env
 }
 
-func GetFromEnvironment() *Env {
+func getFromEnvironment(environ []string) *Env {
 	env := &Env{}
 
 	environment := os.Environ()
