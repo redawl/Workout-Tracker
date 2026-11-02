@@ -1,13 +1,13 @@
 import {
-	Chart,
-	ChartAxis,
-	ChartGroup,
-	ChartLine,
-	ChartThemeColor
+    Chart,
+    ChartAxis,
+    ChartGroup,
+    ChartLine,
+    ChartThemeColor
 } from '@patternfly/react-charts/victory';
 import { Exercise, Workout } from '../../workout-api-client';
 
-export const LineChart = ({ workouts }: { workouts: Array<Workout> }) => {
+export const LineChart = ({ workouts }: { workouts: Workout[] }) => {
     const legendData = [{ childName: 'lbs', name: 'Lbs' }];
 
     return (
@@ -20,7 +20,7 @@ export const LineChart = ({ workouts }: { workouts: Array<Workout> }) => {
             width={800}
         >
             <ChartAxis />
-            <ChartAxis dependentAxis/>
+            <ChartAxis dependentAxis />
             <ChartGroup>
                 <ChartLine
                     data={workouts}

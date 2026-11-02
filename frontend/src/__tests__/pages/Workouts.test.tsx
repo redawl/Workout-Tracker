@@ -1,5 +1,5 @@
 import { render, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { Workouts } from '../../pages/Workouts';
 
 vi.mock('../../workout-api-client', () => {
@@ -16,7 +16,8 @@ vi.mock('../../workout-api-client', () => {
 })
 
 describe('Workouts', () => {
-    it('Matches snapshot', async () => {
+    test('Matches snapshot', async () => {
+        vi.setSystemTime(new Date(2026, 9, 23))
         const { container } = render(<Workouts />);
 
         await waitFor(() => expect(container).toMatchSnapshot());

@@ -5,7 +5,7 @@ import { Exercise } from '../workout-api-client/types.gen.js';
 
 export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSelect, parentOnChange }:
     {
-        exercises: Array<Exercise>,
+        exercises: Exercise[],
         index: number,
         startingValue: string,
         parentOnSelect: (exercise: Exercise, index: number) => void,
@@ -27,7 +27,7 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
     useEffect(() => {
         if (
             value !== '' &&
-            searchInputRef!.current!.contains(document.activeElement)
+            searchInputRef?.current?.contains(document.activeElement)
         ) {
             setIsAutocompleteOpen(true);
 
@@ -81,68 +81,68 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
     // Whenever an autocomplete option is selected, set the search input value, close the menu, and put the browser
     // focus back on the search input
     const onSelect = (e: React.MouseEvent<Element, MouseEvent> | undefined, itemId: string | number | undefined) => {
-        e && e.stopPropagation();
+        e?.stopPropagation();
         setValue(itemId as string);
         setIsAutocompleteOpen(false);
         parentOnSelect(exercises.filter(exercise => exercise.name.toLowerCase() === (itemId as string).toLowerCase())[0], index);
     };
 
-    const handleMenuKeys = (event: KeyboardEvent) => {
-        // If there is a hint while the browser focus is on the search input, tab or right arrow will 'accept' the hint value
-        // and set it as the search input value
-        if (hint && (event.key === 'Tab' || event.key === 'ArrowRight') && searchInputRef.current === event.target) {
-            setValue(hint);
-            setHint('');
-            setIsAutocompleteOpen(false);
-            if (event.key === 'ArrowRight') {
-                event.preventDefault();
-            }
-            // if the autocomplete is open and the browser focus is on the search input,
-        } else if (isAutocompleteOpen && searchInputRef.current && searchInputRef.current === event.target) {
-            // the escape key closes the autocomplete menu and keeps the focus on the search input.
-            if (event.key === 'Escape') {
-                setIsAutocompleteOpen(false);
-                searchInputRef.current.focus();
-                // the up and down arrow keys move browser focus into the autocomplete menu
-            } else if (autocompleteRef.current && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
-                const firstElement: HTMLInputElement | null = autocompleteRef.current.querySelector('li > button:not(:disabled)');
-                firstElement && firstElement.focus();
-                event.preventDefault(); // by default, the up and down arrow keys scroll the window
-                // the tab, enter, and space keys will close the menu, and the tab key will move browser
-                // focus forward one element (by default)
-            } else if (event.key === 'Tab' || event.key === 'Enter' || event.key === 'Space') {
-                setIsAutocompleteOpen(false);
-                if (event.key === 'Enter' || event.key === 'Space') {
-                    event.preventDefault();
-                }
-            }
-            // If the autocomplete is open and the browser focus is in the autocomplete menu
-            // hitting tab will close the autocomplete and but browser focus back on the search input.
-        } else if (isAutocompleteOpen && autocompleteRef.current!.contains(event.target as Node) && event.key === 'Tab') {
-            event.preventDefault();
-            setIsAutocompleteOpen(false);
-            searchInputRef.current!.focus();
-        }
-    };
-
-    // The autocomplete menu should close if the user clicks outside the menu.
-    const handleClickOutside = (event: MouseEvent) => {
-        if (
-            isAutocompleteOpen &&
-            !autocompleteRef!.current!.contains(event.target as Node)
-        ) {
-            setIsAutocompleteOpen(false);
-        }
-    };
 
     useEffect(() => {
+        const handleMenuKeys = (event: KeyboardEvent) => {
+            // If there is a hint while the browser focus is on the search input, tab or right arrow will 'accept' the hint value
+            // and set it as the search input value
+            if (hint && (event.key === 'Tab' || event.key === 'ArrowRight') && searchInputRef.current === event.target) {
+                setValue(hint);
+                setHint('');
+                setIsAutocompleteOpen(false);
+                if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                }
+                // if the autocomplete is open and the browser focus is on the search input,
+            } else if (isAutocompleteOpen && searchInputRef.current && searchInputRef.current === event.target) {
+                // the escape key closes the autocomplete menu and keeps the focus on the search input.
+                if (event.key === 'Escape') {
+                    setIsAutocompleteOpen(false);
+                    searchInputRef.current.focus();
+                    // the up and down arrow keys move browser focus into the autocomplete menu
+                } else if (autocompleteRef.current && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+                    const firstElement: HTMLInputElement | null = autocompleteRef.current.querySelector('li > button:not(:disabled)');
+                    firstElement?.focus();
+                    event.preventDefault(); // by default, the up and down arrow keys scroll the window
+                    // the tab, enter, and space keys will close the menu, and the tab key will move browser
+                    // focus forward one element (by default)
+                } else if (event.key === 'Tab' || event.key === 'Enter' || event.key === 'Space') {
+                    setIsAutocompleteOpen(false);
+                    if (event.key === 'Enter' || event.key === 'Space') {
+                        event.preventDefault();
+                    }
+                }
+                // If the autocomplete is open and the browser focus is in the autocomplete menu
+                // hitting tab will close the autocomplete and but browser focus back on the search input.
+            } else if (isAutocompleteOpen && autocompleteRef.current?.contains(event.target as Node) && event.key === 'Tab') {
+                event.preventDefault();
+                setIsAutocompleteOpen(false);
+                searchInputRef.current?.focus();
+            }
+        };
+
+        // The autocomplete menu should close if the user clicks outside the menu.
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                isAutocompleteOpen &&
+                !autocompleteRef?.current?.contains(event.target as Node)
+            ) {
+                setIsAutocompleteOpen(false);
+            }
+        };
         window.addEventListener('keydown', handleMenuKeys);
         window.addEventListener('click', handleClickOutside);
         return () => {
             window.removeEventListener('keydown', handleMenuKeys);
             window.removeEventListener('click', handleClickOutside);
         };
-    }, [isAutocompleteOpen, hint, searchInputRef.current]);
+    }, [isAutocompleteOpen, hint]);
 
     const searchInput = (
         <SearchInput

@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS EXERCISE_REFERENCE (
 
 INSERT INTO EXERCISE_REFERENCE (name, user_id) SELECT DISTINCT name, user_id from EXERCISE;
 ALTER TABLE EXERCISE ADD COLUMN exercise_reference_id BIGSERIAL;
-UPDATE EXERCISE SET exercise_reference_id = exercise_reference.id FROM exercise_reference WHERE exercise.name = exercise_reference.name;
+UPDATE EXERCISE SET exercise_reference_id = exercise_reference.id FROM exercise_reference WHERE exercise.name = exercise_reference.name AND exercise.user_id = exercise_reference.user_id;
 ALTER TABLE EXERCISE ADD CONSTRAINT fk_exercise_id foreign key (exercise_reference_id) references EXERCISE_REFERENCE (id);
 ALTER TABLE EXERCISE DROP COLUMN name;

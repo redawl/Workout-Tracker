@@ -14,7 +14,7 @@ import { Workout, getAllWorkouts } from "../workout-api-client";
 import { LineChart } from "../components/charts/LineChart";
 
 export const Reports = () => {
-    const [workouts, setWorkouts] = React.useState([] as Array<Workout>);
+    const [workouts, setWorkouts] = React.useState([] as Workout[]);
 
     useEffect(() => {
         getAllWorkouts()

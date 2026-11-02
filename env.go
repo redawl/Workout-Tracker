@@ -46,8 +46,9 @@ func getFromFile(filename string) *Env {
 	}
 
 	scanner := bufio.NewScanner(f)
-
+	i := 0
 	for scanner.Scan() {
+		defer func() { i++ }()
 		line := scanner.Text()
 
 		line = strings.TrimSuffix(line, "\n")
@@ -57,8 +58,8 @@ func getFromFile(filename string) *Env {
 
 		key, value, found := strings.Cut(line, "=")
 		if !found {
-			log.Println("Warning: line has no =")
-			return nil
+			log.Printf("Warning line %d: line has no =\n", i)
+			continue
 		}
 		switch key {
 		case PostgresUser:
@@ -70,7 +71,7 @@ func getFromFile(filename string) *Env {
 		case APIDomain:
 			env.APIDomain = value
 		default:
-			log.Printf("Warning: unknown property in .env: %s=%s", key, value)
+			log.Printf("Warning line %d: unknown property in .env: %s=%s", i, key, value)
 		}
 	}
 

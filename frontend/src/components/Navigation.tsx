@@ -31,7 +31,7 @@ import { Documentation } from '../pages/Documentation.tsx';
 export const Navigation = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [currentPage, setCurrentPage] = useState(WORKOUTS as string | number);
-    const [theme, setTheme] = useState(DARK);
+    const [theme, setTheme] = useState(localStorage.getItem('theme'));
 
     async function logOut() {
         await signOut();
@@ -44,12 +44,8 @@ export const Navigation = () => {
 
         if (savedTheme === DARK) {
             html.className = 'pf-v6-theme-glass pf-v6-theme-dark';
-            setTheme(DARK);
-            localStorage.setItem('theme', DARK);
         } else {
             html.className = 'pf-v6-theme-glass';
-            setTheme(LIGHT);
-            localStorage.setItem('theme', LIGHT);
         }
     }, [theme])
 

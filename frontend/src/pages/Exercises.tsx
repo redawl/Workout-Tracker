@@ -23,7 +23,7 @@ import { EXERCISES } from '../components/constants';
 import { Exercise, getExercises } from '../workout-api-client';
 
 export const Exercises = () => {
-    const [exercises, setExercises] = React.useState([] as Array<Exercise>);
+    const [exercises, setExercises] = React.useState([] as Exercise[]);
 
     useEffect(() => {
         getExercises()

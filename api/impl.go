@@ -23,10 +23,10 @@ type WorkoutAPI struct {
 // (POST /api/workout)
 func (w *WorkoutAPI) AddWorkout(ctx context.Context, request AddWorkoutRequestObject) (AddWorkoutResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
-	defer tx.Rollback(ctx)
 	if err != nil {
 		return AddWorkout500Response{}, err
 	}
+	defer tx.Rollback(ctx)
 
 	queries := w.Queries.WithTx(tx)
 
@@ -219,10 +219,10 @@ func (w *WorkoutAPI) GetWorkoutByDate(ctx context.Context, request GetWorkoutByD
 // (DELETE /api/workout)
 func (w *WorkoutAPI) RemoveWorkoutByDate(ctx context.Context, request RemoveWorkoutByDateRequestObject) (RemoveWorkoutByDateResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
-	defer tx.Rollback(ctx)
 	if err != nil {
 		return nil, err
 	}
+	defer tx.Rollback(ctx)
 
 	queries := w.Queries.WithTx(tx)
 
@@ -250,10 +250,10 @@ func (w *WorkoutAPI) RemoveWorkoutByDate(ctx context.Context, request RemoveWork
 // (PUT /api/workout)
 func (w *WorkoutAPI) UpdateWorkout(ctx context.Context, request UpdateWorkoutRequestObject) (UpdateWorkoutResponseObject, error) {
 	tx, err := w.DB.Begin(ctx)
-	defer tx.Rollback(ctx)
 	if err != nil {
 		return nil, err
 	}
+	defer tx.Rollback(ctx)
 	queries := w.Queries.WithTx(tx)
 
 	session := getSession(ctx)

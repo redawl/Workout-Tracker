@@ -43,7 +43,7 @@ export const Workouts = () => {
         const fetchData = async () => {
             const { data: exercises, error: exerciseError } = await getExercises();
 
-            if (exerciseError || !exercises?.length) {
+            if (exerciseError || exercises === undefined) {
                 console.error(exerciseError);
                 return;
             }
@@ -51,7 +51,7 @@ export const Workouts = () => {
 
             const { data: workout, error: workoutError, response } = await getWorkoutByDate({ query: { date: workoutDate } });
 
-            if (workout?.date !== workoutDate) {
+            if (response?.status === 200 && workout?.date !== workoutDate) {
                 console.error(`API response does not match current date. API Response (${workout?.date}), Current date: ${workoutDate}`);
                 return;
             }
