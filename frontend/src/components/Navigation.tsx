@@ -31,7 +31,7 @@ import { Documentation } from '../pages/Documentation.tsx';
 export const Navigation = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [currentPage, setCurrentPage] = useState(WORKOUTS as string | number);
-    const [theme, setTheme] = useState(localStorage.getItem('theme'));
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || LIGHT);
 
     async function logOut() {
         await signOut();

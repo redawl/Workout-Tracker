@@ -23,14 +23,24 @@ type Env struct {
 }
 
 func GetEnv() *Env {
+	environEnv := getFromEnvironment(os.Environ())
 	fileEnv := getFromFile(".env")
-	if fileEnv != nil {
-		return fileEnv
+
+	oneOrTheOther := func(one, other string) string {
+		if one != "" {
+			return one
+		}
+		return other
 	}
 
-	environEnv := getFromEnvironment(os.Environ())
+	resultEnv := &Env{
+		PostgresUser: oneOrTheOther(environEnv.PostgresUser, fileEnv.PostgresUser),
+		PostgresPass: oneOrTheOther(environEnv.PostgresPass, fileEnv.PostgresUser),
+		PostgresDB:   oneOrTheOther(environEnv.PostgresDB, fileEnv.PostgresUser),
+		APIDomain:    oneOrTheOther(environEnv.APIDomain, fileEnv.APIDomain),
+	}
 
-	return environEnv
+	return resultEnv
 }
 
 func getFromFile(filename string) *Env {
