@@ -32,10 +32,6 @@ http {
     server {
         listen 80 default_server;
 
-        location /api/auth {
-            proxy_pass http://auth-server:8000/api/auth;
-        }
-
         location / {
             proxy_pass http://workout-tracker:8080;
         }

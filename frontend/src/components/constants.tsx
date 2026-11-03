@@ -1,9 +1,9 @@
-export const WORKOUTS: string = 'Workouts';
-export const EXERCISES: string = 'Exercises';
-export const REPORTS: string = 'Reports';
-export const DOCUMENTATION: string = 'Documentation';
-export const REP_STEP: number = 1;
-export const SET_STEP: number = 1;
-export const WEIGHT_STEP: number = 5;
+export const WORKOUTS = 'Workouts';
+export const EXERCISES = 'Exercises';
+export const REPORTS = 'Reports';
+export const DOCUMENTATION = 'Documentation';
+export const REP_STEP = 1;
+export const SET_STEP = 1;
+export const WEIGHT_STEP = 5;
 export const DARK = "dark";
 export const LIGHT = "light";

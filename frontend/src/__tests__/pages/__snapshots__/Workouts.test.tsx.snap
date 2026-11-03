@@ -1,104 +1,112 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Workouts Matches snapshot 1`] = `
+exports[`Workouts > Matches snapshot 1`] = `
 <div>
   <div
-    class="pf-v5-c-panel"
+    class="pf-v6-c-panel"
   >
     <div
-      class="pf-v5-c-panel__header"
+      class="pf-v6-c-panel__header"
     >
       <h2
-        class="pf-v5-c-title pf-m-xl"
-        data-ouia-component-id="OUIA-Generated-Title-1"
-        data-ouia-component-type="PF5/Title"
+        class="pf-v6-c-title pf-m-h2"
+        data-ouia-component-id="OUIA-Generated-Title-_r_0_"
+        data-ouia-component-type="PF6/Title"
         data-ouia-safe="true"
       >
         Workouts
       </h2>
     </div>
     <hr
-      class="pf-v5-c-divider"
+      class="pf-v6-c-divider"
     />
     <div
-      class="pf-v5-c-panel__main"
+      class="pf-v6-c-panel__main"
     >
       <div
-        class="pf-v5-c-panel__main-body"
+        class="pf-v6-c-panel__main-body"
       >
         <form
-          class="pf-v5-c-form"
+          class="pf-v6-c-form"
           novalidate=""
         >
           <div
-            class="pf-v5-c-form__group"
+            class="pf-v6-c-form__group"
           >
             <div
-              class="pf-v5-c-form__group-label"
+              class="pf-v6-c-form__group-label"
             >
               <label
-                class="pf-v5-c-form__label"
+                class="pf-v6-c-form__label"
               >
                 <span
-                  class="pf-v5-c-form__label-text"
+                  class="pf-v6-c-form__label-text"
                 >
                   Workout Date
                 </span>
               </label>
-               
+                
             </div>
             <div
-              class="pf-v5-c-form__group-control"
+              class="pf-v6-c-form__group-control"
             >
               <div
-                class="pf-v5-c-date-picker"
-                style="--pf-v5-c-date-picker__input--c-form-control--width-chars: 10;"
+                class="pf-v6-c-date-picker"
+                style="--pf-v6-c-date-picker__input--c-form-control--width-chars: 10;"
               >
                 <div
-                  class="pf-v5-c-date-picker__input"
+                  class="pf-v6-c-date-picker__input"
                 >
                   <div
-                    class="pf-v5-c-input-group"
+                    class="pf-v6-c-input-group"
                   >
                     <div
-                      class="pf-v5-c-input-group__item"
+                      class="pf-v6-c-input-group__item"
                     >
                       <span
-                        class="pf-v5-c-form-control"
+                        class="pf-v6-c-form-control"
                       >
                         <input
                           aria-invalid="false"
                           aria-label="Date picker"
-                          data-ouia-component-id="OUIA-Generated-TextInputBase-1"
-                          data-ouia-component-type="PF5/TextInput"
+                          data-ouia-component-id="OUIA-Generated-TextInputBase-_r_4_"
+                          data-ouia-component-type="PF6/TextInput"
                           data-ouia-safe="true"
                           placeholder="YYYY-MM-DD"
                           type="text"
-                          value="2024-12-28"
+                          value="2026-10-23"
                         />
                       </span>
                     </div>
                     <div
-                      class="pf-v5-c-input-group__item"
+                      class="pf-v6-c-input-group__item"
                     >
                       <button
+                        aria-haspopup="dialog"
                         aria-label="Toggle date picker"
-                        class="pf-v5-c-button pf-m-control"
+                        class="pf-v6-c-button pf-m-control"
+                        data-ouia-component-id="OUIA-Generated-Button-control-_r_5_"
+                        data-ouia-component-type="PF6/Button"
+                        data-ouia-safe="true"
                         type="button"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="pf-v5-svg"
-                          fill="currentColor"
-                          height="1em"
-                          role="img"
-                          viewBox="0 0 448 512"
-                          width="1em"
+                        <span
+                          class="pf-v6-c-button__icon"
                         >
-                          <path
-                            d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
-                          />
-                        </svg>
+                          <svg
+                            aria-hidden="true"
+                            class="pf-v6-svg"
+                            fill="currentColor"
+                            height="1em"
+                            role="img"
+                            viewBox="0 0 32 32"
+                            width="1em"
+                          >
+                            <path
+                              d="M28.5 5H23V3a1 1 0 1 0-2 0v2H11V3a1 1 0 1 0-2 0v2H3.507c-.827 0-1.5.673-1.5 1.5v7c0 .01.003.019.003.029v8.423c0 .017-.01.031-.01.048 0 .279.115.53.299.712l.004.005 6.99 6.99c.092.092.201.165.323.216l.005.002c.121.05.25.076.38.076h18.5c.827 0 1.5-.673 1.5-1.5V6.5c0-.827-.673-1.5-1.5-1.5ZM9 7v2a1 1 0 1 0 2 0V7h10v2a1 1 0 1 0 2 0V7h5v6H4.01V7H9Zm0 19.586L5.414 23H9v3.586ZM11 28v-5.5c0-.827-.673-1.5-1.5-1.5H4.01v-6H28v13H11Z"
+                            />
+                          </svg>
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -107,71 +115,71 @@ exports[`Workouts Matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="pf-v5-c-form__group"
+            class="pf-v6-c-form__group"
           >
             <div
-              class="pf-v5-c-form__group-label"
+              class="pf-v6-c-form__group-label"
             >
               <label
-                class="pf-v5-c-form__label"
+                class="pf-v6-c-form__label"
               >
                 <span
-                  class="pf-v5-c-form__label-text"
+                  class="pf-v6-c-form__label-text"
                 >
                   Exercises
                 </span>
               </label>
-               
+                
             </div>
             <div
-              class="pf-v5-c-form__group-control"
+              class="pf-v6-c-form__group-control"
             >
               <table
-                class="pf-v5-c-table pf-m-grid-md"
-                data-ouia-component-id="OUIA-Generated-Table-1"
-                data-ouia-component-type="PF5/Table"
+                class="pf-v6-c-table pf-m-grid-md"
+                data-ouia-component-id="OUIA-Generated-Table-_r_7_"
+                data-ouia-component-type="PF6/Table"
                 data-ouia-safe="true"
                 role="grid"
               >
                 <thead
-                  class="pf-v5-c-table__thead"
+                  class="pf-v6-c-table__thead"
                 >
                   <tr
-                    class="pf-v5-c-table__tr"
-                    data-ouia-component-id="OUIA-Generated-TableRow-1"
-                    data-ouia-component-type="PF5/TableRow"
+                    class="pf-v6-c-table__tr"
+                    data-ouia-component-id="OUIA-Generated-TableRow-_r_8_"
+                    data-ouia-component-type="PF6/TableRow"
                     data-ouia-safe="true"
                   >
                     <th
-                      class="pf-v5-c-table__th"
+                      class="pf-v6-c-table__th"
                       scope="col"
                       tabindex="-1"
                     >
                       Name
                     </th>
                     <th
-                      class="pf-v5-c-table__th"
+                      class="pf-v6-c-table__th"
                       scope="col"
                       tabindex="-1"
                     >
                       Lbs
                     </th>
                     <th
-                      class="pf-v5-c-table__th"
+                      class="pf-v6-c-table__th"
                       scope="col"
                       tabindex="-1"
                     >
                       Reps
                     </th>
                     <th
-                      class="pf-v5-c-table__th"
+                      class="pf-v6-c-table__th"
                       scope="col"
                       tabindex="-1"
                     >
                       Sets
                     </th>
                     <th
-                      class="pf-v5-c-table__th"
+                      class="pf-v6-c-table__th"
                       scope="col"
                       tabindex="-1"
                     >
@@ -180,33 +188,36 @@ exports[`Workouts Matches snapshot 1`] = `
                   </tr>
                 </thead>
                 <tbody
-                  class="pf-v5-c-table__tbody"
+                  class="pf-v6-c-table__tbody"
                   role="rowgroup"
                 >
                   <tr
-                    class="pf-v5-c-table__tr"
-                    data-ouia-component-id="OUIA-Generated-TableRow-2"
-                    data-ouia-component-type="PF5/TableRow"
+                    class="pf-v6-c-table__tr"
+                    data-ouia-component-id="OUIA-Generated-TableRow-_r_9_"
+                    data-ouia-component-type="PF6/TableRow"
                     data-ouia-safe="true"
                   >
                     <td
-                      class="pf-v5-c-table__td"
+                      class="pf-v6-c-table__td"
                       colspan="4"
                       tabindex="-1"
                     />
                     <td
-                      class="pf-v5-c-table__td"
+                      class="pf-v6-c-table__td"
                       tabindex="-1"
                     >
                       <button
-                        aria-disabled="false"
-                        class="pf-v5-c-button pf-m-primary"
-                        data-ouia-component-id="OUIA-Generated-Button-primary-1"
-                        data-ouia-component-type="PF5/Button"
+                        class="pf-v6-c-button pf-m-primary"
+                        data-ouia-component-id="OUIA-Generated-Button-primary-_r_a_"
+                        data-ouia-component-type="PF6/Button"
                         data-ouia-safe="true"
                         type="button"
                       >
-                        Add
+                        <span
+                          class="pf-v6-c-button__text"
+                        >
+                          Add
+                        </span>
                       </button>
                     </td>
                   </tr>
@@ -215,23 +226,26 @@ exports[`Workouts Matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="pf-v5-c-form__group pf-m-action"
+            class="pf-v6-c-form__group pf-m-action"
           >
             <div
-              class="pf-v5-c-form__group-control"
+              class="pf-v6-c-form__group-control"
             >
               <div
-                class="pf-v5-c-form__actions"
+                class="pf-v6-c-form__actions"
               >
                 <button
-                  aria-disabled="false"
-                  class="pf-v5-c-button pf-m-primary"
-                  data-ouia-component-id="OUIA-Generated-Button-primary-2"
-                  data-ouia-component-type="PF5/Button"
+                  class="pf-v6-c-button pf-m-primary"
+                  data-ouia-component-id="OUIA-Generated-Button-primary-_r_b_"
+                  data-ouia-component-type="PF6/Button"
                   data-ouia-safe="true"
                   type="button"
                 >
-                  Save Workout
+                  <span
+                    class="pf-v6-c-button__text"
+                  >
+                    Save Workout
+                  </span>
                 </button>
               </div>
             </div>

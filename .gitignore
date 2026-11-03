@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### Postgres ###
-/postgres/data
+/_postgres/data
 
 ### Docker Compose ###
 /.env
@@ -41,3 +41,4 @@ build/
 ### Custom ###
 /src/main/resources/static
 /etc/systemd/workouttracker
+out
