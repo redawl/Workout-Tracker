@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: "postgres:16.3"
+    networks:
+      - app_network
+    environment:
+      - "POSTGRES_DB=${POSTGRES_DB}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASS}"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "PG_DATA=/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./_postgres/data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+  supertokens-core:
+    image: "registry.supertokens.io/supertokens/supertokens-postgresql:9.3.0"
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+    environment:
+      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER}:${POSTGRES_PASS}@postgres:5432/supertokens"
+      DISABLE_TELEMETRY: true
+  workout-tracker:
+    image: "burchbytes/workout_api"
+    build:
+      context: "."
+      args:
+        - "VITE_API_DOMAIN=${API_DOMAIN}"
+        - "ENVIRONMENT=prod"
+    depends_on:
+      - postgres
+      - supertokens-core
+    networks:
+      - app_network
+    environment:
+      - "POSTGRES_DB=${POSTGRES_DB}"
+      - "POSTGRES_PASS=${POSTGRES_PASS}"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "API_DOMAIN=${API_DOMAIN}"
+  nginx:
+    image: nginx:1.27.3
+    depends_on:
+      - workout-tracker
+    volumes:
+      - ./etc/nginx/worktracker:/etc/nginx/nginx.conf:ro
+    networks:
+      - app_network
+    ports:
+      - "${API_DOMAIN}:80"
+
+networks:
+  app_network:
+    driver: bridge
