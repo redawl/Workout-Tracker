@@ -38,17 +38,8 @@ services:
       - "POSTGRES_PASS=${POSTGRES_PASS}"
       - "POSTGRES_USER=${POSTGRES_USER}"
       - "API_DOMAIN=${API_DOMAIN}"
-  nginx:
-    image: nginx:1.27.3
-    depends_on:
-      - workout-tracker
-    volumes:
-      - ./etc/nginx/worktracker:/etc/nginx/nginx.conf:ro
-    networks:
-      - app_network
     ports:
-      - "${API_DOMAIN}:80"
-
+      - "127.0.0.1:8080:8080"
 networks:
   app_network:
     driver: bridge

@@ -6,7 +6,7 @@ RUN ["npm", "ci"]
 COPY frontend .
 RUN ["npm", "run", "build"]
 
-FROM golang:1.27
+FROM golang:1.26
 ARG ENVIRONMENT
 
 WORKDIR /usr/src/app

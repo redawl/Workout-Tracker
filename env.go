@@ -52,7 +52,7 @@ func getFromFile(filename string) *Env {
 			log.Printf("Warning: error reading from .env, ignoring: %v\n", err)
 		}
 
-		return nil
+		return env
 	}
 
 	scanner := bufio.NewScanner(f)

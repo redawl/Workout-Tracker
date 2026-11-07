@@ -11,4 +11,4 @@ docker compose up -d --wait postgres
 
 docker compose down
 
-docker compose up --build
+docker compose -f compose-dev.yaml up --build
