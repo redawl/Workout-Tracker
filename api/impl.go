@@ -26,20 +26,18 @@ func (w *WorkoutAPI) AddWorkout(ctx context.Context, request AddWorkoutRequestOb
 	if err != nil {
 		return AddWorkout500Response{}, err
 	}
-	defer tx.Rollback(ctx)
+	defer tx.Rollback(ctx) //nolint:errcheck
 
 	queries := w.Queries.WithTx(tx)
 
 	workoutDate := request.Body.Date
 	exercises := request.Body.Exercises
 
-	session := getSession(ctx)
-	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
-
-	err = ensureUser(ctx, queries, userID)
+	session, err := getSession(ctx, queries)
 	if err != nil {
 		return AddWorkout500Response{}, err
 	}
+	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
 	params := sql.AddWorkoutParams{
 		WorkoutDate: pgtype.Date{Time: workoutDate.Time, Valid: true},
@@ -97,7 +95,10 @@ func (w *WorkoutAPI) AddWorkout(ctx context.Context, request AddWorkoutRequestOb
 // (GET /api/workout/all)
 func (w *WorkoutAPI) GetAllWorkouts(ctx context.Context, request GetAllWorkoutsRequestObject) (GetAllWorkoutsResponseObject, error) {
 	queries := w.Queries
-	session := getSession(ctx)
+	session, err := getSession(ctx, queries)
+	if err != nil {
+		return GetAllWorkouts500Response{}, err
+	}
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
@@ -140,7 +141,10 @@ func (w *WorkoutAPI) GetAllWorkouts(ctx context.Context, request GetAllWorkoutsR
 func (w *WorkoutAPI) GetExercises(ctx context.Context, request GetExercisesRequestObject) (GetExercisesResponseObject, error) {
 	queries := w.Queries
 
-	session := getSession(ctx)
+	session, err := getSession(ctx, queries)
+	if err != nil {
+		return GetExercises500Response{}, err
+	}
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
@@ -173,7 +177,10 @@ func (w *WorkoutAPI) GetExercises(ctx context.Context, request GetExercisesReque
 func (w *WorkoutAPI) GetWorkoutByDate(ctx context.Context, request GetWorkoutByDateRequestObject) (GetWorkoutByDateResponseObject, error) {
 	queries := w.Queries
 
-	session := getSession(ctx)
+	session, err := getSession(ctx, queries)
+	if err != nil {
+		return GetWorkoutByDate500Response{}, err
+	}
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
@@ -215,11 +222,14 @@ func (w *WorkoutAPI) RemoveWorkoutByDate(ctx context.Context, request RemoveWork
 	if err != nil {
 		return nil, err
 	}
-	defer tx.Rollback(ctx)
+	defer tx.Rollback(ctx) //nolint:errcheck
 
 	queries := w.Queries.WithTx(tx)
 
-	session := getSession(ctx)
+	session, err := getSession(ctx, queries)
+	if err != nil {
+		return RemoveWorkoutByDate500Response{}, err
+	}
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
@@ -246,10 +256,13 @@ func (w *WorkoutAPI) UpdateWorkout(ctx context.Context, request UpdateWorkoutReq
 	if err != nil {
 		return nil, err
 	}
-	defer tx.Rollback(ctx)
+	defer tx.Rollback(ctx) // nolint:errcheck
 	queries := w.Queries.WithTx(tx)
 
-	session := getSession(ctx)
+	session, err := getSession(ctx, queries)
+	if err != nil {
+		return UpdateWorkout500Response{}, err
+	}
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 

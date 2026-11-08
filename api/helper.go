@@ -6,24 +6,27 @@ import (
 
 	"burchbytes.com/workout_tracker/sql"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/supertokens/supertokens-golang/recipe/session/sessmodels"
 )
 
 type SessionKey struct{}
 
 // getSession retrieves the current SuperTokens session from ctx.
-func getSession(ctx context.Context) sessmodels.SessionContainer {
+func getSession(ctx context.Context, queries *sql.Queries) (sessmodels.SessionContainer, error) {
 	session := ctx.Value(SessionKey{})
 	container := session.(sessmodels.SessionContainer)
-	return container
+	err := ensureUser(ctx, queries, container.GetUserID())
+	if err != nil {
+		return nil, err
+	}
+	return container, nil
 }
 
-func ensureUser(ctx context.Context, queries *sql.Queries, userID pgtype.Text) error {
-	_, err := queries.GetUser(ctx, userID.String)
+func ensureUser(ctx context.Context, queries *sql.Queries, userID string) error {
+	_, err := queries.GetUser(ctx, userID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return queries.AddUser(ctx, userID.String)
+			return queries.AddUser(ctx, userID)
 		}
 		return err
 	}
