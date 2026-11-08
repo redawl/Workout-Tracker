@@ -1,5 +1,5 @@
-import { render, waitFor } from '@testing-library/react';
-import { describe, expect, test, vi } from 'vitest';
+import { findByText, render, waitFor } from '@testing-library/react';
+import { describe, test, vi } from 'vitest';
 import { Workouts } from '../../pages/Workouts';
 
 vi.mock('../../workout-api-client', () => {
@@ -16,7 +16,7 @@ vi.mock('../../workout-api-client', () => {
 })
 
 describe('Workouts', () => {
-    test('Matches snapshot', async () => {
+    test('Matches snapshot', async ({ expect }) => {
         vi.setSystemTime(new Date(2026, 9, 23))
         const { container } = render(<Workouts />);
 

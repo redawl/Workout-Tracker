@@ -47,6 +47,7 @@ export const Workouts = () => {
 
             if (exerciseError || exercises === undefined) {
                 console.error(exerciseError);
+                setLoaded(true)
                 return;
             }
             setExerciseReferences([...exercises]);
@@ -55,6 +56,7 @@ export const Workouts = () => {
 
             if (response?.status === 200 && workout?.date !== workoutDate) {
                 console.error(`API response does not match current date. API Response (${workout?.date}), Current date: ${workoutDate}`);
+                setLoaded(true)
                 return;
             }
 
@@ -65,6 +67,7 @@ export const Workouts = () => {
                 } else {
                     console.error(workoutError);
                 }
+                setLoaded(true)
                 return;
             }
             workoutExists.current = true;
