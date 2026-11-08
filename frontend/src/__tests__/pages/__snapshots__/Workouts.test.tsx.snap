@@ -26,21 +26,47 @@ exports[`Workouts > Matches snapshot 1`] = `
       <div
         class="pf-v6-c-panel__main-body"
       >
-        <svg
-          aria-label="Contents"
-          aria-valuetext="Loading..."
-          class="pf-v6-c-spinner pf-m-xl"
-          role="progressbar"
-          viewBox="0 0 100 100"
+        <div
+          class="pf-v6-c-empty-state"
         >
-          <circle
-            class="pf-v6-c-spinner__path"
-            cx="50"
-            cy="50"
-            fill="none"
-            r="45"
-          />
-        </svg>
+          <div
+            class="pf-v6-c-empty-state__content"
+          >
+            <div
+              class="pf-v6-c-empty-state__header"
+            >
+              <div
+                class="pf-v6-c-empty-state__icon"
+              >
+                <svg
+                  aria-hidden="false"
+                  aria-label="Contents"
+                  aria-valuetext="Loading..."
+                  class="pf-v6-c-spinner pf-m-xl"
+                  role="progressbar"
+                  viewBox="0 0 100 100"
+                >
+                  <circle
+                    class="pf-v6-c-spinner__path"
+                    cx="50"
+                    cy="50"
+                    fill="none"
+                    r="45"
+                  />
+                </svg>
+              </div>
+              <div
+                class="pf-v6-c-empty-state__title"
+              >
+                <h4
+                  class="pf-v6-c-empty-state__title-text"
+                >
+                  Loading
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

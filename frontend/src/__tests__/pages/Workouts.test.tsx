@@ -1,4 +1,4 @@
-import { findByText, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { describe, test, vi } from 'vitest';
 import { Workouts } from '../../pages/Workouts';
 

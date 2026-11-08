@@ -8,7 +8,7 @@
         "build": "vite build --mode=dev",
         "build:prod": "vite build --mode=prod",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "test": "vitest",
+        "test": "vitest run",
         "preview": "vite preview",
         "gen-client": "npx @hey-api/openapi-ts -o src/workout-api-client -p @hey-api/client-fetch -i ../config/schema.json"
     },

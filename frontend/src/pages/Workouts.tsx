@@ -13,7 +13,8 @@ import {
     ButtonVariant,
     NumberInput,
     Alert,
-    Spinner
+    Spinner,
+    EmptyState
 } from '@patternfly/react-core';
 import { REP_STEP, SET_STEP, WEIGHT_STEP, WORKOUTS } from '../components/constants';
 import { useEffect, useRef, useState } from 'react';
@@ -42,22 +43,24 @@ export const Workouts = () => {
     const workoutExists = useRef(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { data: exercises, error: exerciseError } = await getExercises();
+        Promise.all([
+            getExercises(),
+            getWorkoutByDate({ query: { date: workoutDate } }),
+        ]).then(async (results) => {
+            const { data: exercises, error: exerciseError } = results[0];
 
             if (exerciseError || exercises === undefined) {
                 console.error(exerciseError);
-                setLoaded(true)
-                return;
+                throw exerciseError;
             }
             setExerciseReferences([...exercises]);
 
-            const { data: workout, error: workoutError, response } = await getWorkoutByDate({ query: { date: workoutDate } });
+            const { data: workout, error: workoutError, response } = results[1];
 
             if (response?.status === 200 && workout?.date !== workoutDate) {
-                console.error(`API response does not match current date. API Response (${workout?.date}), Current date: ${workoutDate}`);
-                setLoaded(true)
-                return;
+                const error = `API response does not match current date. API Response (${workout?.date}), Current date: ${workoutDate}`;
+                console.error(error);
+                throw new Error(error);
             }
 
             if (workoutError || !workout) {
@@ -66,17 +69,16 @@ export const Workouts = () => {
                     setExercises([]);
                 } else {
                     console.error(workoutError);
+                    throw workoutError;
                 }
-                setLoaded(true)
                 return;
             }
             workoutExists.current = true;
             setExercises(workout.exercises);
             setUnsavedChanges(false);
-            setLoaded(true)
-        }
-
-        fetchData();
+        })
+            .catch((err) => console.error(err))
+            .finally(() => setLoaded(true));
     }, [workoutDate]);
 
     const handleAddExercise = () => {
@@ -103,21 +105,21 @@ export const Workouts = () => {
     }
 
     const handleUpdateLbs = (exerciseIndex: number, lbs: number) => {
-        setExercises(exercises.map(
-            (exercise: Exercise, index: number) => index === exerciseIndex ? { ...exercise, lbs } : exercise
+        setExercises((prev) => prev.map(
+            (exercise, index) => index === exerciseIndex ? { ...exercise, lbs } : exercise
         ));
         setUnsavedChanges(true);
     }
 
     const handleUpdateSets = (exerciseIndex: number, sets: number) => {
-        setExercises(exercises.map(
-            (exercise: Exercise, index: number) => index === exerciseIndex ? { ...exercise, sets } : exercise
+        setExercises(prev => prev.map(
+            (exercise, index) => index === exerciseIndex ? { ...exercise, sets } : exercise
         ));
         setUnsavedChanges(true);
     }
 
     const updateReps = (exerciseIndex: number, reps: number) => {
-        setExercises(exercises.map((exercise: Exercise, index: number) => {
+        setExercises(prev => prev.map((exercise, index) => {
             if (index === exerciseIndex) {
                 setUnsavedChanges(true);
                 return { ...exercise, reps };
@@ -128,6 +130,7 @@ export const Workouts = () => {
     }
 
     const handleUpdateWorkout = async () => {
+        setLoaded(false);
         if (workoutExists.current) {
             const { response } = await updateWorkout({
                 body: {
@@ -138,11 +141,13 @@ export const Workouts = () => {
             if (response?.status !== 200) {
                 setSaveSuccess(false);
                 setSaveFailureMessage(`Save response returned ${response?.status}`);
+                setLoaded(true);
                 return;
             }
             setSaveSuccess(true);
             setUnsavedChanges(false);
             workoutExists.current = true;
+            setLoaded(true);
         } else {
             const { error } = await addWorkout({
                 body: {
@@ -152,11 +157,13 @@ export const Workouts = () => {
             })
             if (error) {
                 setSaveFailureMessage(error.toString());
+                setLoaded(true);
                 return;
             }
             setSaveSuccess(true);
             setUnsavedChanges(false);
             workoutExists.current = true;
+            setLoaded(true);
         }
     }
 
@@ -198,7 +205,10 @@ export const Workouts = () => {
                         }
                         <FormGroup label="Workout Date">
                             <DatePicker
-                                onChange={(_event, str) => setWorkoutDate(str)}
+                                onChange={(_event, str) => {
+                                    setLoaded(false);
+                                    setWorkoutDate(str);
+                                }}
                                 value={workoutDate}
                             />
                         </FormGroup>
@@ -229,7 +239,7 @@ export const Workouts = () => {
                                                 <Td>
                                                     <NumberInput
                                                         value={exercise.lbs}
-                                                        onChange={(event: React.FormEvent<HTMLInputElement>) => handleUpdateLbs(index, +(event.target as HTMLInputElement).value)}
+                                                        onChange={(event) => handleUpdateLbs(index, +(event.target as HTMLInputElement).value)}
                                                         onMinus={() => handleUpdateLbs(index, Math.max(exercise.lbs - WEIGHT_STEP, 0))}
                                                         onPlus={() => handleUpdateLbs(index, exercise.lbs + WEIGHT_STEP)}
                                                     />
@@ -237,7 +247,7 @@ export const Workouts = () => {
                                                 <Td>
                                                     <NumberInput
                                                         value={exercise.reps}
-                                                        onChange={(event: React.FormEvent<HTMLInputElement>) => updateReps(index, +(event.target as HTMLInputElement).value)}
+                                                        onChange={(event) => updateReps(index, +(event.target as HTMLInputElement).value)}
                                                         onMinus={() => updateReps(index, Math.max(exercise.reps - REP_STEP, 0))}
                                                         onPlus={() => updateReps(index, exercise.reps + REP_STEP)}
                                                     />
@@ -245,7 +255,7 @@ export const Workouts = () => {
                                                 <Td>
                                                     <NumberInput
                                                         value={exercise.sets}
-                                                        onChange={(event: React.FormEvent<HTMLInputElement>) => handleUpdateSets(index, +(event.target as HTMLInputElement).value)}
+                                                        onChange={(event) => handleUpdateSets(index, +(event.target as HTMLInputElement).value)}
                                                         onMinus={() => handleUpdateSets(index, exercise.sets - SET_STEP >= 0 ? exercise.sets - SET_STEP : 0)}
                                                         onPlus={() => handleUpdateSets(index, exercise.sets + SET_STEP)}
                                                     />
@@ -293,7 +303,7 @@ export const Workouts = () => {
                                 Save Workout
                             </Button>
                         </ActionGroup>
-                    </Form>) : <Spinner />}
+                    </Form>) : <EmptyState titleText="Loading" headingLevel="h4" icon={Spinner} />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>

@@ -7,7 +7,8 @@ import {
     Divider,
     PanelMain,
     PanelMainBody,
-    Spinner
+    Spinner,
+    EmptyState
 } from '@patternfly/react-core';
 
 import { REPORTS } from "../components/constants";
@@ -38,7 +39,7 @@ export const Reports = () => {
             <Divider />
             <PanelMain>
                 <PanelMainBody>
-                    {loaded ? <LineChart workouts={workouts} /> : <Spinner />}
+                    {loaded ? <LineChart workouts={workouts} /> : <EmptyState titleText="Loading" headingLevel="h4" icon={Spinner} />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>

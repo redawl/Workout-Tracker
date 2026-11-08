@@ -5,7 +5,8 @@ import {
     Divider,
     PanelMain,
     PanelMainBody,
-    Spinner
+    Spinner,
+    EmptyState
 } from '@patternfly/react-core';
 
 import {
@@ -69,7 +70,7 @@ export const Exercises = () => {
                                 ))
                             }
                         </Tbody>
-                    </Table> : <Spinner />}
+                    </Table> : <EmptyState titleText="Loading" headingLevel="h4" icon={Spinner} />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>
