@@ -31,6 +31,12 @@ WHERE exercise.user_id = $1 AND (name, workout_date) in (
 -- name: GetExercisesForWorkout :many
 SELECT * FROM EXERCISE WHERE user_id = $1 AND workout_id = $2;
 
+-- name: GetExercisesByDate :many
+SELECT w.workout_date, e.name, e.lbs, e.reps, e.sets 
+FROM EXERCISE e 
+LEFT JOIN workout w ON w.id = e.workout_id 
+WHERE w.user_id = $1 AND w.workout_date = $2;
+
 -- name: AddExercise :one
 INSERT INTO EXERCISE (workout_id, user_id, name, lbs, reps, sets) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
 

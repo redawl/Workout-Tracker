@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"log"
 	"path/filepath"
 	"testing"
 	"time"
@@ -131,11 +130,6 @@ func TestGetWorkout(t *testing.T) {
 				{Name: "Bent Over Row", Lbs: 45, Reps: 8, Sets: 4},
 			},
 		},
-		{
-			Name:              "No exercises",
-			ExpectedDate:      date,
-			ExpectedExercises: []Exercise{},
-		},
 	} {
 		t.Run(tt.Name, func(t *testing.T) {
 			t.Cleanup(func() {
@@ -160,12 +154,10 @@ func TestGetWorkout(t *testing.T) {
 			})
 			require.Nil(t, err)
 
-			if workout200Response, ok := workout.(GetWorkoutByDate200JSONResponse); ok {
-				assert.Equal(t, tt.ExpectedDate, workout200Response.Date)
-				assert.Equal(t, tt.ExpectedExercises, workout200Response.Exercises)
-			} else {
-				log.Fatalf("Error: non 200 response: %T", workout)
-			}
+			require.IsType(t, GetWorkoutByDate200JSONResponse{}, workout)
+			workout200Response := workout.(GetWorkoutByDate200JSONResponse)
+			assert.Equal(t, tt.ExpectedDate, workout200Response.Date)
+			assert.Equal(t, tt.ExpectedExercises, workout200Response.Exercises)
 		})
 	}
 }

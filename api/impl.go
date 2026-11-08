@@ -177,23 +177,16 @@ func (w *WorkoutAPI) GetWorkoutByDate(ctx context.Context, request GetWorkoutByD
 
 	userID := pgtype.Text{String: session.GetUserID(), Valid: true}
 
-	workout, err := queries.GetWorkoutByDate(ctx, sql.GetWorkoutByDateParams{
+	exercises, err := queries.GetExercisesByDate(ctx, sql.GetExercisesByDateParams{
 		UserID:      userID,
 		WorkoutDate: pgtype.Date{Time: request.Params.Date.Time, Valid: true},
 	})
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return GetWorkoutByDate404Response{}, nil
-		}
 		return nil, err
 	}
 
-	exercises, err := queries.GetExercisesForWorkout(ctx, sql.GetExercisesForWorkoutParams{
-		UserID:    userID,
-		WorkoutID: pgtype.Int8{Int64: workout.ID, Valid: true},
-	})
-	if err != nil {
-		return nil, err
+	if len(exercises) == 0 {
+		return GetWorkoutByDate404Response{}, nil
 	}
 
 	responseExercises := make([]Exercise, len(exercises))
@@ -210,7 +203,7 @@ func (w *WorkoutAPI) GetWorkoutByDate(ctx context.Context, request GetWorkoutByD
 	}
 
 	return GetWorkoutByDate200JSONResponse{
-		Date:      types.Date{Time: workout.WorkoutDate.Time},
+		Date:      request.Params.Date,
 		Exercises: responseExercises,
 	}, nil
 }

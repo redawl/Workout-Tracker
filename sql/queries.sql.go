@@ -114,6 +114,49 @@ func (q *Queries) GetExercises(ctx context.Context, userID pgtype.Text) ([]GetEx
 	return items, nil
 }
 
+const getExercisesByDate = `-- name: GetExercisesByDate :many
+SELECT w.workout_date, e.name, e.lbs, e.reps, e.sets FROM EXERCISE e LEFT JOIN workout w on w.id = e.workout_id WHERE w.user_id = $1 AND w.workout_date = $2
+`
+
+type GetExercisesByDateParams struct {
+	UserID      pgtype.Text
+	WorkoutDate pgtype.Date
+}
+
+type GetExercisesByDateRow struct {
+	WorkoutDate pgtype.Date
+	Name        pgtype.Text
+	Lbs         pgtype.Int4
+	Reps        pgtype.Int4
+	Sets        pgtype.Int4
+}
+
+func (q *Queries) GetExercisesByDate(ctx context.Context, arg GetExercisesByDateParams) ([]GetExercisesByDateRow, error) {
+	rows, err := q.db.Query(ctx, getExercisesByDate, arg.UserID, arg.WorkoutDate)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetExercisesByDateRow
+	for rows.Next() {
+		var i GetExercisesByDateRow
+		if err := rows.Scan(
+			&i.WorkoutDate,
+			&i.Name,
+			&i.Lbs,
+			&i.Reps,
+			&i.Sets,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getExercisesForWorkout = `-- name: GetExercisesForWorkout :many
 SELECT id, workout_id, user_id, lbs, reps, sets, name FROM EXERCISE WHERE user_id = $1 AND workout_id = $2
 `
