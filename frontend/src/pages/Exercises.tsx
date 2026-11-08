@@ -4,7 +4,8 @@ import {
     Title,
     Divider,
     PanelMain,
-    PanelMainBody
+    PanelMainBody,
+    Spinner
 } from '@patternfly/react-core';
 
 import {
@@ -16,14 +17,15 @@ import {
     Td
 } from '@patternfly/react-table';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { EXERCISES } from '../components/constants';
 
 import { Exercise, getExercises } from '../workout-api-client';
 
 export const Exercises = () => {
-    const [exercises, setExercises] = React.useState([] as Exercise[]);
+    const [exercises, setExercises] = useState([] as Exercise[]);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         getExercises()
@@ -34,7 +36,8 @@ export const Exercises = () => {
                 }
                 setExercises(data);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => console.error(error))
+            .finally(() => setLoaded(true));
     }, []);
 
     return (
@@ -45,7 +48,7 @@ export const Exercises = () => {
             <Divider />
             <PanelMain>
                 <PanelMainBody>
-                    <Table>
+                    {loaded ? <Table>
                         <Thead>
                             <Tr>
                                 <Th>Name</Th>
@@ -66,7 +69,7 @@ export const Exercises = () => {
                                 ))
                             }
                         </Tbody>
-                    </Table>
+                    </Table> : <Spinner />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>

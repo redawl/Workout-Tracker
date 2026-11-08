@@ -12,7 +12,8 @@ import {
     Button,
     ButtonVariant,
     NumberInput,
-    Alert
+    Alert,
+    Spinner
 } from '@patternfly/react-core';
 import { REP_STEP, SET_STEP, WEIGHT_STEP, WORKOUTS } from '../components/constants';
 import { useEffect, useRef, useState } from 'react';
@@ -32,6 +33,7 @@ import { SearchAutocomplete } from '../components/SearchAutocomplete';
 export const Workouts = () => {
     const [workoutDate, setWorkoutDate] = useState(formatDate(new Date()));
     const [exercises, setExercises] = useState([] as Exercise[]);
+    const [loaded, setLoaded] = useState(false);
     const [saveSuccess, setSaveSuccess] = useState(false);
     const [saveFailureMessage, setSaveFailureMessage] = useState('');
     const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -68,6 +70,7 @@ export const Workouts = () => {
             workoutExists.current = true;
             setExercises(workout.exercises);
             setUnsavedChanges(false);
+            setLoaded(true)
         }
 
         fetchData();
@@ -171,7 +174,7 @@ export const Workouts = () => {
             <Divider />
             <PanelMain>
                 <PanelMainBody>
-                    <Form>
+                    {loaded ? (<Form>
                         {
                             unsavedChanges && (
                                 <FormGroup>
@@ -287,7 +290,7 @@ export const Workouts = () => {
                                 Save Workout
                             </Button>
                         </ActionGroup>
-                    </Form>
+                    </Form>) : <Spinner />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>

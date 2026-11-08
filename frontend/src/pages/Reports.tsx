@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     Panel,
@@ -6,7 +6,8 @@ import {
     Title,
     Divider,
     PanelMain,
-    PanelMainBody
+    PanelMainBody,
+    Spinner
 } from '@patternfly/react-core';
 
 import { REPORTS } from "../components/constants";
@@ -14,7 +15,8 @@ import { Workout, getAllWorkouts } from "../workout-api-client";
 import { LineChart } from "../components/charts/LineChart";
 
 export const Reports = () => {
-    const [workouts, setWorkouts] = React.useState([] as Workout[]);
+    const [workouts, setWorkouts] = useState([] as Workout[]);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         getAllWorkouts()
@@ -25,6 +27,7 @@ export const Reports = () => {
                 }
                 setWorkouts(workouts);
             })
+            .finally(() => setLoaded(true));
     }, []);
 
     return (
@@ -35,7 +38,7 @@ export const Reports = () => {
             <Divider />
             <PanelMain>
                 <PanelMainBody>
-                    <LineChart workouts={workouts} />
+                    {loaded ? <LineChart workouts={workouts} /> : <Spinner />}
                 </PanelMainBody>
             </PanelMain>
         </Panel>

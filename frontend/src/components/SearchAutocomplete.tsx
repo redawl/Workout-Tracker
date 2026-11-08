@@ -146,6 +146,7 @@ export const SearchAutocomplete = ({ exercises, index, startingValue, parentOnSe
 
     const searchInput = (
         <SearchInput
+            required
             value={value}
             onChange={onChange}
             onClear={onClear}
