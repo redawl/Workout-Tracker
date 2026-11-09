@@ -18,4 +18,4 @@ then
 fi
 
 pushd "/home/github/Workout-Tracker"
-docker compose up -d 
+./scripts/run-prod.sh
