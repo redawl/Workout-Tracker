@@ -5,25 +5,12 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    rolldownOptions: {
-      output: {
-        codeSplitting: {
-          minModuleSize: 20000,
-          groups: [
-            {
-              name: "vendor",
-              test: /node_modules/,
-            },
-          ],
-        },
-      },
-    },
     outDir: "../out",
     emptyOutDir: true,
   },
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./vitest.setup.ts"],
     globals: true,
     css: true,
   },

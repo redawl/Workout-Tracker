@@ -27,7 +27,7 @@ services:
       context: "."
       args:
         - "VITE_API_DOMAIN=${API_DOMAIN}"
-        - "ENVIRONMENT=prod"
+        - "ENVIRONMENT=dev"
     depends_on:
       - postgres
       - supertokens-core

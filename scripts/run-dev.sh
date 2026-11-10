@@ -9,6 +9,6 @@ docker compose -f compose-dev.yaml up -d --wait postgres
 
 ./goose.sh up
 
-docker compose down
+docker compose -f compose-dev.yaml down
 
 docker compose -f compose-dev.yaml up --build -d
