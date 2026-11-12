@@ -7,6 +7,26 @@ export default defineConfig({
   build: {
     outDir: "../out",
     emptyOutDir: true,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: "patternfly-table",
+              test: /node_modules\/@patternfly\/react-table/,
+            },
+            {
+              name: "patternfly",
+              test: /node_modules\/@patternfly/,
+            },
+            {
+              name: "vendor",
+              test: /node_modules/,
+            },
+          ],
+        },
+      },
+    },
   },
   test: {
     environment: "jsdom",

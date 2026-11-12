@@ -4,7 +4,7 @@ ENV VITE_API_DOMAIN="${VITE_API_DOMAIN}"
 COPY frontend/package.json frontend/package-lock.json .
 RUN ["npm", "ci"]
 COPY frontend .
-RUN ["npm", "run", "build"]
+RUN ["npm", "run", "build:prod"]
 
 FROM golang:1.26
 ARG ENVIRONMENT
